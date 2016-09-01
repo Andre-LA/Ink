@@ -1,2 +1,2 @@
 # Ink
-GUI Library, under in development
+GUI Library for Löve2D game framework, under in development
