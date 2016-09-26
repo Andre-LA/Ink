@@ -2,7 +2,7 @@ ink = require "Ink/Ink"
 -- arquivo exemplo (example file)
 
 function love.load()
-    ink:New_Instance("btn_teste", "Ink_button", {{50,20}, {100,50}, "Teste do Ink"})
+    ink:New_Instance("btn_teste", "Ink_button", {{50,20}, {200, 100}, "Teste do Ink"})
 end
 
 function love.update(dt)

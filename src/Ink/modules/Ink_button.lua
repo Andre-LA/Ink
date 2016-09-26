@@ -1,11 +1,10 @@
 class "Ink_button"
 
 function Ink_button:Ink_button()
-    self.posX = 0
-    self.posY = 0
-    self.sizeX = 100
-    self.sizeY = 100
+    self.pos = {x = 0, y = 0}
+    self.size = {x = 0, y = 0}
     self.text = "a button"
+    self.geometry = "rectangle"
 
     self.colors = {
         {2, 2, 50},
@@ -19,23 +18,11 @@ function Ink_button:Ink_button()
 end
 
 function Ink_button:Ink_Start (position, size, text, button_color, text_color)
-    self.posX = position[1]
-    self.posY = position[2]
-    self.sizeX = size[1]
-    self.sizeY = size[2]
+    self.pos.x = position[1]
+    self.pos.y = position[2]
+    self.size.x = size[1]
+    self.size.y = size[2]
     self.text = text
-end
-
-function Ink_button:Ink_VerifyHover ()
-    local mousePosx, mousePosy = love.mouse.getPosition()
-    local ret = false;
-
-    if (mousePosx > self.posX and mousePosx < self.posX + self.sizeX) and
-    (mousePosy > self.posY and mousePosy < self.posY + self.sizeY) then
-        ret = true
-    end
-
-    return ret
 end
 
 function Ink_button:Update (dt)
@@ -44,6 +31,11 @@ end
 
 function Ink_button:Hover ()
     self.button_color = self.colors[3]
+
+    -- if is on mouse click, execute the MouseClickDown function
+    if (love.mouse.isDown(1)) then
+        self:MouseClickDown(1)
+    end
 end
 
 function Ink_button:NotHover ()
@@ -55,10 +47,13 @@ function Ink_button:MouseClickDown (b)
 end
 
 function Ink_button:Ink_Draw ()
+    -- Draw button background
     love.graphics.setColor(self.button_color[1], self.button_color[2], self.button_color[3])
-    love.graphics.rectangle("fill", self.posX, self.posY, self.sizeX, self.sizeY)
+    love.graphics.rectangle("fill", self.pos.x, self.pos.y, 100, 100)
+
+    -- Draw button text
     love.graphics.setColor(self.text_color[1], self.text_color[2], self.text_color[3])
-    love.graphics.print(self.text, self.posX, self.posY)
+    love.graphics.print(self.text, self.pos.x, self.pos.y)
 end
 
 return Ink_button()

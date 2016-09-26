@@ -20,6 +20,7 @@ function Ink:Ink ()
 end
 
 function Ink:New_Instance (instance_name, module_name, inicial_values)
+    -- This will execute the module file and execute the Ink_Start function of the module
     self.instances[instance_name] = dofile ("Ink/modules/" .. module_name .. ".lua")
     self.instances[instance_name]:Ink_Start(inicial_values[1], inicial_values[2], inicial_values[3])
 end
@@ -38,26 +39,45 @@ end
 
 --<<Love callbacks
 
--- Ïnk callbacks>>
+-- Ink callbacks>>
 
 function Ink:Hover ()
     for k,v in pairs(self.instances) do
-        if (self.instances[k]:Ink_VerifyHover()) then
+        -- verify the type of geometry
+        --love.window.setTitle(self.instances[k].pos[1])
+        -- verify if the mouse is over the geometry of the instance
+        if self:VerifyHover(self.instances[k].geometry, self.instances[k].pos, self.instances[k].size) then
+            -- execute the Hover function of the module
             self.instances[k]:Hover()
-            if (love.mouse.isDown(1)) then
-                self.instances[k]:MouseClickDown(1)
-            end
         else
             self.instances[k]:NotHover()
         end
     end
 end
 
--- <<Ïnk callbacks
+-- <<Ink callbacks
 
+-- Ink functions to help you ;)>>
+function Ink:VerifyHover (type, pos, size)
+    local mousePosx, mousePosy = love.mouse.getPosition()
+    local ret = false;
 
+    if type == "rectangle" then
+        if (mousePosx > pos.x and mousePosx < pos.x + size.x) and
+        (mousePosy > pos.y and mousePosy < pos.y + size.y) then
+            ret = true
+        end
+    elseif type == "circle" then
+        if math.sqrt(math.pow(math.abs(mousePosx - pos.x), 2) + math.pow(math.abs(mousePosy - pos.y), 2)) <= size then
+            ret = true
+        end
+    end
 
--- future functions on Ink: :hover, :MouseClick(b), :MouseClickDown(b), :MouseClickUp(b)
+    return ret
+end
+-- <<Ink functions to help you ;)
+
+-- future functions on Ink: :MouseClick(b), :MouseClickDown(b), :MouseClickUp(b)
 -- :MouseClick só é executada quando mouse é clicado e está hover ;)
 
 
