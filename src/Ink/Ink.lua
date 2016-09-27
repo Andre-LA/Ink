@@ -17,6 +17,7 @@ class "Ink"
 
 function Ink:Ink ()
     self.instances = {}
+    self.font = love.graphics.newFont("Ink/fonts/FreeSans.ttf", 14)
 end
 
 function Ink:New_Instance (instance_name, module_name, inicial_values)
@@ -29,11 +30,35 @@ end
 -- Love callbacks>>
 function Ink:Update (dt)
     self:Hover()
+    for k,v in pairs(self.instances) do
+        self.instances[k]:Update()
+    end
 end
 
 function Ink:Draw ()
+    local previousFont = love.graphics.getFont()
+    love.graphics.setFont(self.font)
+
     for k,v in pairs(self.instances) do
         self.instances[k]:Ink_Draw()
+    end
+
+    love.graphics.setFont(previousFont)
+end
+
+function Ink:MousePressed (x, y, btn, isTouch)
+    for k,v in pairs(self.instances) do
+        if self:VerifyHover(self.instances[k].geometry, self.instances[k].pos, self.instances[k].size) then
+            self.instances[k]:MousePressed(x, y, btn)
+        end
+    end
+end
+
+function Ink:MouseReleased (x, y, btn, isTouch)
+    for k,v in pairs(self.instances) do
+        if self:VerifyHover(self.instances[k].geometry, self.instances[k].pos, self.instances[k].size) then
+            self.instances[k]:MouseReleased(x, y, btn)
+        end
     end
 end
 
@@ -76,24 +101,6 @@ function Ink:VerifyHover (type, pos, size)
     return ret
 end
 -- <<Ink functions to help you ;)
-
--- future functions on Ink: :MouseClick(b), :MouseClickDown(b), :MouseClickUp(b)
--- :MouseClick só é executada quando mouse é clicado e está hover ;)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 return Ink()
