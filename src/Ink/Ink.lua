@@ -38,19 +38,31 @@ function Ink:Update (dt)
         if v.parent ~= "" then
             v:Update_Parent(self.instances[v.parent].pos)
         end
-        self:Hover(v)
-        v:Update()
+
+        self:Detect_Visibility(v)
+        if v.isVisible then
+            self:Hover(v)
+            v:Update()
+        end
     end
 end
 
 function Ink:Draw ()
+    -- reset coordinate system
+    love.graphics.push()
+    love.graphics.origin()
+
     local previousFont = love.graphics.getFont()
     love.graphics.setFont(self.font)
 
     for k,v in pairs(self.instances) do
-        v:Ink_Draw()
+        if v.isVisible then
+            v:Ink_Draw()
+        end
     end
 
+    -- reset coordinate system
+    love.graphics.pop()
     love.graphics.setFont(previousFont)
 end
 
@@ -58,7 +70,7 @@ function Ink:MousePressed (x, y, btn, isTouch)
     for k,v in pairs(self.instances) do
         local parentPos = v.parent ~= "" and self.instances[v.parent].pos or {x = 0, y = 0}
 
-        if self:VerifyHover(v.geometry, v.pos, v.size, parentPos) then
+        if self:Detect_Hover(v.geometry, v.pos, v.size, parentPos) then
             v:MousePressed(x, y, btn)
         end
     end
@@ -68,7 +80,7 @@ function Ink:MouseReleased (x, y, btn, isTouch)
     for k,v in pairs(self.instances) do
         local parentPos = v.parent ~= "" and self.instances[v.parent].pos or {x = 0, y = 0}
 
-        if self:VerifyHover(v.geometry, v.pos, v.size, parentPos) then
+        if self:Detect_Hover(v.geometry, v.pos, v.size, parentPos) then
             v:MouseReleased(x, y, btn)
         end
     end
@@ -78,11 +90,19 @@ end
 
 -- Ink callbacks>>
 
+function Ink:Detect_Visibility (v)
+    local parentPos = v.parent ~= "" and self.instances[v.parent].pos or {x = 0, y = 0}
+    local distX = v.pos.x + parentPos.x
+    local distY = v.pos.y + parentPos.y
+
+    v.isVisible = distX <= love.graphics.getWidth() and distY <= love.graphics.getHeight()
+end
+
 function Ink:Hover (v)
     local parentPos = v.parent ~= "" and self.instances[v.parent].pos or {x = 0, y = 0}
 
     -- verify if the mouse is over the geometry of the instance
-    if self:VerifyHover(v.geometry, v.pos, v.size, parentPos) then
+    if self:Detect_Hover(v.geometry, v.pos, v.size, parentPos) then
         -- execute the Hover function of the module
         if not self.onHover then
             v:Hover()
@@ -97,7 +117,7 @@ end
 -- <<Ink callbacks
 
 -- Ink functions to help you ;)>>
-function Ink:VerifyHover (type, pos, size, parentPos)
+function Ink:Detect_Hover (type, pos, size, parentPos)
     local mousePosx, mousePosy = love.mouse.getPosition()
     local ret = false;
 

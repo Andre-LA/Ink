@@ -3,6 +3,7 @@ class "Ink_button"
 function Ink_button:Ink_button()
     self.parent = ""
     self.parentPos = {x = 0, y = 0}
+    self.isVisible = true
 
     self.pos = {x = 0, y = 0}
     self.size = {x = 0, y = 0}
@@ -55,7 +56,6 @@ end
 
 function Ink_button:MousePressed (x, y, b)
     self.button_color = self.colors[4]
-    self.pos.x = self.pos.x + 10
 end
 
 function Ink_button:MouseReleased (x, y, b)

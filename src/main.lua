@@ -1,8 +1,6 @@
 ink = require "Ink/Ink"
 -- arquivo exemplo (example file)
 
-local angle = 0;
-
 function love.load()
     ink:New_Instance("btn_teste", "Ink_button", {positionX = 20, positionY = 20, sizeX = 200, sizeY = 120, text = "btn_teste2"})
     ink:New_Instance("btn_teste2", "Ink_button", {positionX = 20, positionY = 130, sizeX = 200, sizeY = 120, text = "btn_teste2"}, "btn_teste")
