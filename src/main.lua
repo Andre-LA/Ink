@@ -4,14 +4,12 @@ ink = require "Ink/Ink"
 local angle = 0;
 
 function love.load()
-    ink:New_Instance("btn_teste", "Ink_button", {{50,20}, {200, 100}, "teste"})
-    ink:New_Instance("btn_teste2", "Ink_button", {{20,20}, {100, 100}, "teste2"}, "btn_teste")
+    ink:New_Instance("btn_teste", "Ink_button", {positionX = 20, positionY = 20, sizeX = 200, sizeY = 120, text = "btn_teste2"})
+    ink:New_Instance("btn_teste2", "Ink_button", {positionX = 20, positionY = 130, sizeX = 200, sizeY = 120, text = "btn_teste2"}, "btn_teste")
 end
 
 function love.update(dt)
     ink:Update(dt)
-    --love.window.setTitle("FPS:" .. love.timer.getFPS())
-    angle = angle + dt
 end
 
 function love.draw()

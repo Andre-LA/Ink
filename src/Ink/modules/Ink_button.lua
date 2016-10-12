@@ -29,15 +29,18 @@ function Ink_button:Set_Parent (name)
     self.parent = name;
 end
 
-function Ink_button:Ink_Start (position, size, text, button_color, text_color)
-    self.pos.x = position[1]
-    self.pos.y = position[2]
-    self.size.x = size[1]
-    self.size.y = size[2]
-    self.text = text
+function Ink_button:Ink_Start (values, inkLib)
+    self.inkLib = inkLib
+
+    self.pos.x = values.positionX
+    self.pos.y = values.positionY
+    self.size.x = values.sizeX
+    self.size.y = values.sizeY
+    self.text = values.text
 end
 
 function Ink_button:Update (dt)
+
 end
 
 function Ink_button:Hover ()

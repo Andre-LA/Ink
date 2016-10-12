@@ -18,12 +18,13 @@ class "Ink"
 function Ink:Ink ()
     self.instances = {}
     self.font = love.graphics.newFont("Ink/fonts/FreeSans.ttf", 14)
+    self.onHover = false
 end
 
 function Ink:New_Instance (instance_name, module_name, inicial_values, parentName)
     -- This will execute the module file and execute the Ink_Start function of the module
     self.instances[instance_name] = dofile ("Ink/modules/" .. module_name .. ".lua")
-    self.instances[instance_name]:Ink_Start(inicial_values[1], inicial_values[2], inicial_values[3])
+    self.instances[instance_name]:Ink_Start(inicial_values, self)
 
     if parentName ~= nil then
         self.instances[instance_name]:Set_Parent(parentName)
@@ -33,12 +34,11 @@ end
 
 -- Love callbacks>>
 function Ink:Update (dt)
-    self:Hover()
     for k,v in pairs(self.instances) do
         if v.parent ~= "" then
             v:Update_Parent(self.instances[v.parent].pos)
         end
-
+        self:Hover(v)
         v:Update()
     end
 end
@@ -78,18 +78,19 @@ end
 
 -- Ink callbacks>>
 
-function Ink:Hover ()
-    for k,v in pairs(self.instances) do
+function Ink:Hover (v)
+    local parentPos = v.parent ~= "" and self.instances[v.parent].pos or {x = 0, y = 0}
 
-        local parentPos = v.parent ~= "" and self.instances[v.parent].pos or {x = 0, y = 0}
-
-        -- verify if the mouse is over the geometry of the instance
-        if self:VerifyHover(v.geometry, v.pos, v.size, parentPos) then
-            -- execute the Hover function of the module
+    -- verify if the mouse is over the geometry of the instance
+    if self:VerifyHover(v.geometry, v.pos, v.size, parentPos) then
+        -- execute the Hover function of the module
+        if not self.onHover then
             v:Hover()
-        else
-            v:NotHover()
+            self.onHover = true;
         end
+    else
+        self.onHover = false;
+        v:NotHover()
     end
 end
 
