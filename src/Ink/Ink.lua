@@ -23,7 +23,7 @@ end
 
 function Ink:New_Instance (instance_name, module_name, inicial_values, parentName)
     -- This will execute the module file and execute the Ink_Start function of the module
-    self.instances[instance_name] = dofile ("Ink/modules/" .. module_name .. ".lua")
+    self.instances[instance_name] = assert( love.filesystem.load( "Ink/modules/" .. module_name .. ".lua" ) )() -- same, dofile ("Ink/modules/" .. module_name .. ".lua"), but dofile not working well in love2d
     self.instances[instance_name]:Ink_Start(inicial_values, self)
 
     if parentName ~= nil then
@@ -32,7 +32,7 @@ function Ink:New_Instance (instance_name, module_name, inicial_values, parentNam
 end
 
 
--- Love callbacks>>
+-- Love functions>>
 function Ink:Update (dt)
     for k,v in pairs(self.instances) do
         if v.parent ~= "" then
@@ -43,6 +43,9 @@ function Ink:Update (dt)
         if v.isVisible then
             self:Hover(v)
             v:Update()
+            if love.mouse.isDown(1) then
+                v:MouseDown(love.mouse.getX(), love.mouse.getY(), 1)
+            end
         end
     end
 end
@@ -86,9 +89,9 @@ function Ink:MouseReleased (x, y, btn, isTouch)
     end
 end
 
---<<Love callbacks
+--<<Love functions
 
--- Ink callbacks>>
+-- Ink functions>>
 
 function Ink:Detect_Visibility (v)
     local parentPos = v.parent ~= "" and self.instances[v.parent].pos or {x = 0, y = 0}
@@ -114,7 +117,7 @@ function Ink:Hover (v)
     end
 end
 
--- <<Ink callbacks
+-- <<Ink functions
 
 -- Ink functions to help you ;)>>
 function Ink:Detect_Hover (type, pos, size, parentPos)
