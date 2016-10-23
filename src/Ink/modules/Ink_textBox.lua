@@ -45,11 +45,13 @@ function Ink_textBox:Ink_Start (values, inkLib)
 end
 
 function Ink_textBox:Update (dt)
-    self.deltaTime = self.deltaTime + dt
+    if isActive then
+        self.deltaTime = self.deltaTime + dt
 
-    if self.deltaTime > 0.6 then
-        self.deltaTime = 0
-        self.colors.txtBackColor[4] = self.colors.txtBackColor[4] == 40 and 0 or 40
+        if self.deltaTime > 0.6 then
+            self.deltaTime = 0
+            self.colors.txtBackColor[4] = self.colors.txtBackColor[4] == 40 and 0 or 40
+        end
     end
 end
 
