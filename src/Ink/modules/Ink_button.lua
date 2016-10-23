@@ -11,6 +11,7 @@ function Ink_button:Ink_button()
     self.value = function  () --the .value property can be any type of value (number, string, function, etc)
 
     end
+    self.inHover = false
 
     -- My properties
     self.pivot = {x = 0.5, y = 0.5}
@@ -63,8 +64,10 @@ function Ink_button:NotHover ()
 end
 
 function Ink_button:MousePressed (x, y, b)
-    self.button_color = self.colors[4]
-    self.value()
+    if self.inHover then
+        self.button_color = self.colors[4]
+        self.value()
+    end
 end
 
 function Ink_button:MouseDown (x, y, b)
@@ -72,17 +75,30 @@ function Ink_button:MouseDown (x, y, b)
 end
 
 function Ink_button:MouseReleased (x, y, b)
-    self.button_color = self.colors[3]
+    if self.inHover then
+        self.button_color = self.colors[3]
+    end
+end
+
+function Ink_button:TextInput (text)
+
+end
+
+function Ink_button:KeyPressed (key, scancode, isrepeat)
+
+end
+
+function Ink_button:KeyReleased (key)
+
 end
 
 function Ink_button:Ink_Draw ()
     -- Draw button background
-    love.graphics.setColor(self.button_color[1], self.button_color[2], self.button_color[3])
+    love.graphics.setColor(self.button_color)
     love.graphics.rectangle("fill", self.pos.x + self.parentPos.x, self.pos.y + self.parentPos.y, self.size.x, self.size.y)
 
     -- Draw button text, the text position = button position + (button size * pivot) - half size of the button text
-    love.graphics.setColor(self.text_color[1], self.text_color[2]
-    , self.text_color[3])
+    love.graphics.setColor(self.text_color)
     love.graphics.print(self.text, self.pos.x + (self.size.x * self.pivot.x) - (love.graphics.getFont():getWidth("a") * #self.text/2) + self.parentPos.x, self.pos.y + (self.size.y * self.pivot.y) - (love.graphics.getFont():getHeight("a")/2) + self.parentPos.y)
 end
 
