@@ -1,15 +1,13 @@
-class "Ink_textBox"
-
--- Create modules using this as reference
-
-function Ink_textBox:Ink_textBox()
+local Module = {}
+function Module:New()
     -- ink properties:
-    self.parent = ""
+    self.parent = "Ink_origin"
     self.parentPos = {x = 0, y = 0}
-    self.isVisible = true
-    self.geometry = "rectangle"
+    self.localPos = {x = 0, y = 0}
     self.pos = {x = 0, y = 0}
     self.size = {x = 0, y = 0}
+    self.isVisible = true
+    self.geometry = "rectangle"
     self.value = "hi ^-^" --the .value property can be any type of value (number, string, function, etc)
     self.inHover = false
 
@@ -23,28 +21,28 @@ function Ink_textBox:Ink_textBox()
     self.outlineSize = 5;
     self.isActive = false
     self.deltaTime = 0
+
+    local nw = {}
+    setmetatable(nw, {__index = self})
+    return nw
 end
 
-function Ink_textBox:Update_Parent (parent)
-    self.parentPos = parent
-end
-
-function Ink_textBox:Set_Parent (name)
+function Module:Set_Parent (name)
     self.parent = name;
 end
 
-function Ink_textBox:Ink_Start (values, inkLib)
+function Module:Ink_Start (values, inkLib)
     self.inkLib = inkLib
 
-    self.pos.x = values.positionX
-    self.pos.y = values.positionY
+    self.localPos.x = values.positionX
+    self.localPos.y = values.positionY
     self.size.x = values.sizeX
     self.size.y = values.sizeY
     self.outlineSize = values.outlineSize;
     self.value = values.value;
 end
 
-function Ink_textBox:Update (dt)
+function Module:Update (dt)
     if isActive then
         self.deltaTime = self.deltaTime + dt
 
@@ -55,14 +53,14 @@ function Ink_textBox:Update (dt)
     end
 end
 
-function Ink_textBox:Hover ()
+function Module:Hover ()
 end
 
-function Ink_textBox:NotHover ()
+function Module:NotHover ()
 
 end
 
-function Ink_textBox:MousePressed (x, y, b)
+function Module:MousePressed (x, y, b)
     if self.inHover and self.isActive == not self.inHover then
         self.outlineSize = self.outlineSize * 1.5
 
@@ -81,19 +79,19 @@ function Ink_textBox:MousePressed (x, y, b)
     self.isActive = self.inHover
 end
 
-function Ink_textBox:MouseDown (x, y, b)
+function Module:MouseDown (x, y, b)
 
 end
 
-function Ink_textBox:MouseReleased (x, y, b)
+function Module:MouseReleased (x, y, b)
 
 end
 
-function Ink_textBox:TextInput (text)
+function Module:TextInput (text)
     self.value = self.value .. text
 end
 
-function Ink_textBox:KeyPressed (key, scancode, isrepeat)
+function Module:KeyPressed (key, scancode, isrepeat)
     if key == "backspace" then
         -- get the byte offset to the last UTF-8 character in the string.
         local byteoffset = utf8.offset(self.value, -1)
@@ -106,32 +104,36 @@ function Ink_textBox:KeyPressed (key, scancode, isrepeat)
     end
 end
 
-function Ink_textBox:KeyReleased (key)
+function Module:KeyReleased (key)
 
 end
 
-function Ink_textBox:Ink_Draw ()
+function Module:Ink_Draw ()
+    -- Draw fist background, this background will be the outline
     love.graphics.setColor(self.colors.txtOutline)
-    love.graphics.rectangle("fill", self.pos.x + self.parentPos.x, self.pos.y + self.parentPos.y, self.size.x, self.size.y)
+    love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
 
+    -- Draw the background
     love.graphics.setColor(self.colors.txtArea)
-    love.graphics.rectangle("fill", self.pos.x  + self.outlineSize/2 + self.parentPos.x, self.pos.y  + self.outlineSize/2 + self.parentPos.y, self.size.x - self.outlineSize , self.size.y - self.outlineSize )
+    love.graphics.rectangle("fill", self.pos.x  + self.outlineSize/2, self.pos.y  + self.outlineSize/2, self.size.x - self.outlineSize , self.size.y - self.outlineSize )
 
+    -- if active (edit mode), draw the cursor
     if self.isActive then
         love.graphics.setColor(self.colors.txtBackColor)
-        love.graphics.rectangle("fill", self.pos.x + self.outlineSize + 10 + self.parentPos.x + love.graphics.getFont():getWidth(self.value), self.pos.y + self.size.y/2 - (love.graphics.getFont():getHeight("a")/2) + self.parentPos.y, love.graphics.getFont():getWidth("a")/2, love.graphics.getFont():getHeight(self.value))
+        love.graphics.rectangle("fill", self.pos.x + self.outlineSize + 10 + love.graphics.getFont():getWidth(self.value), self.pos.y + self.size.y/2 - (love.graphics.getFont():getHeight("a")/2), love.graphics.getFont():getWidth("a")/2, love.graphics.getFont():getHeight(self.value))
     end
 
+    -- Draw the text
     love.graphics.setColor(self.colors.txtColor)
-    love.graphics.print(self.value, self.pos.x + self.outlineSize + 10 + self.parentPos.x, self.pos.y + self.size.y/2 - (love.graphics.getFont():getHeight("a")/2) + self.parentPos.y)
+    love.graphics.print(self.value, self.pos.x + self.outlineSize + 10, self.pos.y + self.size.y/2 - (love.graphics.getFont():getHeight("a")/2))
 end
 
-function Ink_textBox:Get_Value ()
+function Module:Get_Value ()
     return self.value
 end
 
-function Ink_textBox:Set_Value (newValue)
-    self.value = newValue
+function Module:Set_Value (newValue)
+    self.value = type(newValue) == "string" and newValue or tostring(newValue)
 end
 
-return Ink_textBox()
+return Module:New()

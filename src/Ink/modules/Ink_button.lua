@@ -1,13 +1,15 @@
-class "Ink_button"
+--class "Ink_button"
+local Module = {}
 
-function Ink_button:Ink_button()
+function Module:New()
     -- ink properties:
-    self.parent = ""
+    self.parent = "Ink_origin"
     self.parentPos = {x = 0, y = 0}
-    self.isVisible = true
-    self.geometry = "rectangle"
+    self.localPos = {x = 0, y = 0}
     self.pos = {x = 0, y = 0}
     self.size = {x = 0, y = 0}
+    self.isVisible = true
+    self.geometry = "rectangle"
     self.value = function  () --the .value property can be any type of value (number, string, function, etc)
 
     end
@@ -26,88 +28,91 @@ function Ink_button:Ink_button()
 
     self.button_color = self.colors[2]
     self.text_color = self.colors[1]
+
+    local nw = {}
+    setmetatable(nw, {__index = self})
+    return nw
 end
 
--- All of these functions are obrigatory (can have nothing, like the Update)
-function Ink_button:Update_Parent (parent)
-    self.parentPos = parent
-end
-
-function Ink_button:Set_Parent (name)
+function Module:Set_Parent (name)
     self.parent = name;
 end
 
-function Ink_button:Ink_Start (values, inkLib)
+function Module:Ink_Start (values, inkLib)
     self.inkLib = inkLib
 
-    self.pos.x = values.positionX
-    self.pos.y = values.positionY
+    self.localPos.x = values.positionX
+    self.localPos.y = values.positionY
     self.size.x = values.sizeX
     self.size.y = values.sizeY
     self.text = values.text
     self.value = values.value;
 end
 
-function Ink_button:Update (dt)
+function Module:Update (dt)
     -- If you will not use a function, you can write nothing inside, but is obrigatory the module have the function
 
 end
 
-function Ink_button:Hover ()
+function Module:Hover ()
     if self.button_color ~= self.colors[4] then
         self.button_color = self.colors[3]
     end
 end
 
-function Ink_button:NotHover ()
+function Module:NotHover ()
     self.button_color = self.colors[2]
 end
 
-function Ink_button:MousePressed (x, y, b)
+function Module:MousePressed (x, y, b)
     if self.inHover then
         self.button_color = self.colors[4]
         self.value()
     end
 end
 
-function Ink_button:MouseDown (x, y, b)
+function Module:MouseDown (x, y, b)
 
 end
 
-function Ink_button:MouseReleased (x, y, b)
+function Module:MouseReleased (x, y, b)
     if self.inHover then
         self.button_color = self.colors[3]
     end
 end
 
-function Ink_button:TextInput (text)
+function Module:TextInput (text)
 
 end
 
-function Ink_button:KeyPressed (key, scancode, isrepeat)
+function Module:KeyPressed (key, scancode, isrepeat)
 
 end
 
-function Ink_button:KeyReleased (key)
+function Module:KeyReleased (key)
 
 end
 
-function Ink_button:Ink_Draw ()
+function Module:Ink_Draw ()
     -- Draw button background
     love.graphics.setColor(self.button_color)
-    love.graphics.rectangle("fill", self.pos.x + self.parentPos.x, self.pos.y + self.parentPos.y, self.size.x, self.size.y)
+    love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
 
     -- Draw button text, the text position = button position + (button size * pivot) - half size of the button text
     love.graphics.setColor(self.text_color)
-    love.graphics.print(self.text, self.pos.x + (self.size.x * self.pivot.x) - (love.graphics.getFont():getWidth("a") * #self.text/2) + self.parentPos.x, self.pos.y + (self.size.y * self.pivot.y) - (love.graphics.getFont():getHeight("a")/2) + self.parentPos.y)
+    love.graphics.print(self.text, self.pos.x + (self.size.x * self.pivot.x) - (love.graphics.getFont():getWidth(self.text)/2), self.pos.y + (self.size.y * self.pivot.y) - (love.graphics.getFont():getHeight("a")/2))
 end
 
-function Ink_button:GetValue ()
+function Module:GetValue ()
     return self.value
 end
 
-function Ink_button:SetValue (newValue)
+function Module:SetValue (newValue)
     self.value = newValue
 end
 
-return Ink_button()
+function Module:Set_Text (text)
+    self.text = type(text) == "string" and text or tostring(text)
+end
+
+return Module:New()

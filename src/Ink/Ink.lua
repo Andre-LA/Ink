@@ -1,6 +1,6 @@
-require "lclass/class"
+--require "lclass/class"
 utf8 = require "utf8"
-class "Ink"
+--class "Ink"
 
   --------------------------------------
 ----------------------------------------
@@ -16,10 +16,19 @@ class "Ink"
 --------------------------------------
 -- Ink by Andre-LA, member of Love2D Brasil group
 
+local Ink = {}
+
 function Ink:Ink ()
+    local nw = {}
+
     self.instances = {}
     self.font = love.graphics.newFont("Ink/fonts/FreeSans.ttf", 14)
     self.onHover = false
+
+    self:New_Instance("Ink_origin", "Ink_empty", {positionX = 0, positionY = 0, sizeX = 0, sizeY = 0, value = "Ink ^^"})
+
+    setmetatable(nw, {__index = self})
+    return nw
 end
 
 function Ink:New_Instance (instance_name, module_name, inicial_values, parentName)
@@ -29,6 +38,8 @@ function Ink:New_Instance (instance_name, module_name, inicial_values, parentNam
 
     if parentName ~= nil then
         self.instances[instance_name]:Set_Parent(parentName)
+    elseif instance_name ~= "Ink_origin" then
+        self.instances[instance_name]:Set_Parent("Ink_origin")
     end
 end
 
@@ -36,10 +47,7 @@ end
 -- Love functions>>
 function Ink:Update (dt)
     for k,v in pairs(self.instances) do
-        if v.parent ~= "" then
-            v:Update_Parent(self.instances[v.parent].pos)
-        end
-
+        self:Update_Parent(v, dt)
         self:Detect_Visibility(v)
 
         if v.isVisible then
@@ -110,6 +118,16 @@ end
 
 -- Ink functions>>
 
+function Ink:Update_Parent (v, dt)
+    v.parentPos = self.instances[v.parent].pos
+    v.pos.x = self:BasicInterpolation(v.pos.x, v.localPos.x + v.parentPos.x, 0.5)
+    v.pos.y = self:BasicInterpolation(v.pos.y, v.localPos.y + v.parentPos.y, 0.5)
+end
+
+function Ink:BasicInterpolation (initial, final, interpolation)
+    return (initial + final) * interpolation
+end
+
 function Ink:Detect_Visibility (v)
     local parentPos = v.parent ~= "" and self.instances[v.parent].pos or {x = 0, y = 0}
     local distX = v.pos.x + parentPos.x
@@ -122,7 +140,7 @@ function Ink:Hover (v)
     local parentPos = v.parent ~= "" and self.instances[v.parent].pos or {x = 0, y = 0}
 
     -- verify if the mouse is over the geometry of the instance
-    local inHover = self:Detect_Hover(v.geometry, v.pos, v.size, parentPos)
+    local inHover = self:Detect_Hover(v.geometry, v.pos, v.size)
     if inHover then
         -- execute the Hover function of the module
         if not self.onHover then
@@ -139,18 +157,18 @@ end
 -- <<Ink functions
 
 -- Ink functions to help you ;)>>
-function Ink:Detect_Hover (type, pos, size, parentPos)
+function Ink:Detect_Hover (type, pos, size)
     local mousePosx, mousePosy = love.mouse.getPosition()
     local ret = false;
 
     if type == "rectangle" then
-        if (mousePosx > pos.x + parentPos.x and mousePosx < pos.x + size.x + parentPos.x) and
-        (mousePosy > pos.y + parentPos.y and mousePosy < pos.y + size.y + parentPos.y) then
+        if (mousePosx > pos.x and mousePosx < pos.x + size.x) and
+        (mousePosy > pos.y and mousePosy < pos.y + size.y) then
             ret = true
         end
     elseif type == "circle" then
-        if math.sqrt(math.pow(math.abs(mousePosx - pos.x + parentPos.x), 2)
-        + math.pow(math.abs(mousePosy - pos.y + parentPos.y), 2)) <= size then
+        if math.sqrt(math.pow(math.abs(mousePosx - pos.x), 2)
+        + math.pow(math.abs(mousePosy - pos.y), 2)) <= size then
             ret = true
         end
     end
@@ -159,5 +177,4 @@ function Ink:Detect_Hover (type, pos, size, parentPos)
 end
 -- <<Ink functions to help you ;)
 
-
-return Ink()
+return Ink:Ink()
