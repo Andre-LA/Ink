@@ -22,10 +22,10 @@ function Ink:Ink ()
     local nw = {}
 
     self.instances = {}
-    self.font = love.graphics.newFont("Ink/fonts/FreeSans.ttf", 14)
+    self.font = love.graphics.newFont("Ink/fonts/FreeSans.ttf", 18)
     self.onHover = false
 
-    self:New_Instance("Ink_origin", "Ink_empty", {positionX = 0, positionY = 0, sizeX = 0, sizeY = 0, value = "Ink ^^"})
+    self:New_Instance("Ink_origin", "Ink_empty", {position = {0, 0}, size = {0, 0}, value = "Ink ^^"})
 
     setmetatable(nw, {__index = self})
     return nw
@@ -43,6 +43,11 @@ function Ink:New_Instance (instance_name, module_name, inicial_values, parentNam
     end
 end
 
+function Ink:Delete_All_Instances ()
+    self.instances = {}
+    self:New_Instance("Ink_origin", "Ink_empty", {position = {0, 0}, size = {0, 0}, value = "Ink ^^"})
+    self.onHover = false
+end
 
 -- Love functions>>
 function Ink:Update (dt)
@@ -84,14 +89,13 @@ end
 
 function Ink:MousePressed (x, y, btn, isTouch)
     for k,v in pairs(self.instances) do
-        local parentPos = v.parent ~= "" and self.instances[v.parent].pos or {x = 0, y = 0}
+
         v:MousePressed(x, y, btn)
     end
 end
 
 function Ink:MouseReleased (x, y, btn, isTouch)
     for k,v in pairs(self.instances) do
-        local parentPos = v.parent ~= "" and self.instances[v.parent].pos or {x = 0, y = 0}
         v:MouseReleased(x, y, btn)
     end
 end
@@ -120,12 +124,13 @@ end
 
 function Ink:Update_Parent (v, dt)
     v.parentPos = self.instances[v.parent].pos
-    v.pos.x = self:BasicInterpolation(v.pos.x, v.localPos.x + v.parentPos.x, 0.5)
-    v.pos.y = self:BasicInterpolation(v.pos.y, v.localPos.y + v.parentPos.y, 0.5)
+    v.pos.x = self:BasicInterpolation(v.pos.x, v.localPos.x + v.parentPos.x, 0.05)
+    v.pos.y = self:BasicInterpolation(v.pos.y, v.localPos.y + v.parentPos.y, 0.05)
 end
 
 function Ink:BasicInterpolation (initial, final, interpolation)
-    return (initial + final) * interpolation
+    --return (initial + final) * interpolation
+    return initial + ((final - initial) * interpolation)
 end
 
 function Ink:Detect_Visibility (v)

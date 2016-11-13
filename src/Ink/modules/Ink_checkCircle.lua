@@ -32,8 +32,8 @@ end
 function Module:Ink_Start (values, inkLib)
     self.inkLib = inkLib
 
-    self.localPos.x = values.positionX
-    self.localPos.y = values.positionY
+    self.localPos.x = values.position[1]
+    self.localPos.y = values.position[2]
     self.size = values.size
     self.value = values.value;
     self.outlineSize = values.outlineSize
