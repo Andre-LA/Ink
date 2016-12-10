@@ -58,7 +58,7 @@ function Ink:Delete_All_Instances ()
 end
 
 -- Love functions>>
-function Ink:Update (dt)
+function Ink:update (dt)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
@@ -76,7 +76,7 @@ function Ink:Update (dt)
     end
 end
 
-function Ink:Draw ()
+function Ink:draw ()
     -- reset coordinate system
     love.graphics.push()
     love.graphics.origin()
@@ -101,7 +101,7 @@ function Ink:Draw ()
     love.graphics.setFont(previousFont)
 end
 
-function Ink:MousePressed (x, y, btn, isTouch)
+function Ink:mousepressed (x, y, btn, isTouch)
 
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
@@ -111,7 +111,7 @@ function Ink:MousePressed (x, y, btn, isTouch)
     end
 end
 
-function Ink:MouseReleased (x, y, btn, isTouch)
+function Ink:mousereleased (x, y, btn, isTouch)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
@@ -120,7 +120,7 @@ function Ink:MouseReleased (x, y, btn, isTouch)
     end
 end
 
-function Ink:TextInput (text)
+function Ink:textinput (text)
 
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
@@ -130,7 +130,7 @@ function Ink:TextInput (text)
     end
 end
 
-function Ink:Keypressed (key, scancode, isrepeat)
+function Ink:keypressed (key, scancode, isrepeat)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
@@ -139,7 +139,7 @@ function Ink:Keypressed (key, scancode, isrepeat)
     end
 end
 
-function Ink:Keyreleased (key)
+function Ink:keyreleased (key)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
