@@ -1,3 +1,4 @@
+-- Create modules using this as reference
 local Module = {}
 function Module:New()
     -- ink properties:
@@ -8,17 +9,11 @@ function Module:New()
     self.localSize = {x = 0, y = 0}
     self.size      = {x = 0, y = 0}
     self.isVisible = true
-    self.geometry  = "rectangle"
+    self.geometry  = "none"
 
-    self.value = false
-    self.inHover = false
-
-    self.colors = {
-        backgroundColor = {240, 240, 240, 255},
-        fillColor = {140, 140, 140, 255}
-    }
-
-    self.outlineSize = 4;
+    self.value     = "rectangle"
+    self.color = {20,20,20,255}
+    self.inHover   = false
 
     local nw = {}
     setmetatable(nw, {__index = self})
@@ -37,10 +32,11 @@ function Module:Ink_Start (values, inkLib)
     self.localSize.x = values.size[1]
     self.localSize.y = values.size[2]
     self.value = values.value;
-    self.outlineSize = values.outlineSize
+    self.color = values.color
 end
 
 function Module:Update (dt)
+
 end
 
 function Module:Hover ()
@@ -52,9 +48,7 @@ function Module:NotHover ()
 end
 
 function Module:MousePressed (x, y, b)
-    if self.inHover then
-        self.value = not self.value
-    end
+
 end
 
 function Module:MouseDown (x, y, b)
@@ -78,15 +72,8 @@ function Module:KeyReleased (key)
 end
 
 function Module:Ink_Draw ()
-    -- Draw background
-    love.graphics.setColor(self.colors.backgroundColor)
+    love.graphics.setColor(self.color)
     love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
-
-    -- if value is true, draw the fill
-    if self.value then
-        love.graphics.setColor(self.colors.fillColor)
-        love.graphics.rectangle("fill", self.pos.x + self.outlineSize, self.pos.y + self.outlineSize, self.size.x - 2*self.outlineSize, self.size.y - 2*self.outlineSize)
-    end
 end
 
 function Module:Get_Value ()
@@ -95,10 +82,6 @@ end
 
 function Module:Set_Value (newValue)
     self.value = newValue
-end
-
-function Module:InvertValue ()
-    self.value = not self.value
 end
 
 return Module:New()

@@ -1,19 +1,20 @@
---class "Ink_button"
+--module "Ink_button"
 local Module = {}
 
 function Module:New()
     -- ink properties:
-    self.parent = "Ink_origin"
+    self.parent    = "Ink_origin"
     self.parentPos = {x = 0, y = 0}
-    self.localPos = {x = 0, y = 0}
-    self.pos = {x = 0, y = 0}
-    self.size = {x = 0, y = 0}
+    self.localPos  = {x = 0, y = 0}
+    self.pos       = {x = 0, y = 0}
+    self.localSize = {x = 0, y = 0}
+    self.size      = {x = 0, y = 0}
     self.isVisible = true
-    self.geometry = "rectangle"
-    self.value = function  () --the .value property can be any type of value (number, string, function, etc)
+    self.geometry  = "rectangle"
+    self.value     = function  ()
 
     end
-    self.inHover = false
+    self.inHover   = false
 
     -- My properties
     self.pivot = {x = 0.5, y = 0.5}
@@ -43,8 +44,8 @@ function Module:Ink_Start (values, inkLib)
 
     self.localPos.x = values.position[1]
     self.localPos.y = values.position[2]
-    self.size.x = values.size[1]
-    self.size.y = values.size[2]
+    self.localSize.x = values.size[1]
+    self.localSize.y = values.size[2]
     self.text = values.text
     self.value = values.value;
 end

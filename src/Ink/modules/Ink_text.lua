@@ -1,3 +1,4 @@
+-- Create modules using this as reference
 local Module = {}
 function Module:New()
     -- ink properties:
@@ -7,18 +8,13 @@ function Module:New()
     self.pos       = {x = 0, y = 0}
     self.localSize = {x = 0, y = 0}
     self.size      = {x = 0, y = 0}
+    self.rotation  = 0
     self.isVisible = true
-    self.geometry  = "rectangle"
+    self.geometry  = "none"
+    self.color = {0,0,0,255}
 
-    self.value = false
+    self.value = "hi ^-^" --the .value property can be any type of value (number, string, function, etc)
     self.inHover = false
-
-    self.colors = {
-        backgroundColor = {240, 240, 240, 255},
-        fillColor = {140, 140, 140, 255}
-    }
-
-    self.outlineSize = 4;
 
     local nw = {}
     setmetatable(nw, {__index = self})
@@ -31,16 +27,17 @@ end
 
 function Module:Ink_Start (values, inkLib)
     self.inkLib = inkLib
-
     self.localPos.x = values.position[1]
     self.localPos.y = values.position[2]
     self.localSize.x = values.size[1]
     self.localSize.y = values.size[2]
     self.value = values.value;
-    self.outlineSize = values.outlineSize
+    self.font = values.font
+    self.color = values.color
 end
 
 function Module:Update (dt)
+
 end
 
 function Module:Hover ()
@@ -52,9 +49,7 @@ function Module:NotHover ()
 end
 
 function Module:MousePressed (x, y, b)
-    if self.inHover then
-        self.value = not self.value
-    end
+
 end
 
 function Module:MouseDown (x, y, b)
@@ -78,15 +73,20 @@ function Module:KeyReleased (key)
 end
 
 function Module:Ink_Draw ()
-    -- Draw background
-    love.graphics.setColor(self.colors.backgroundColor)
-    love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
+    -- Saves the Ink font for reset in the end
+    local previousFont = self.inkLib.font
 
-    -- if value is true, draw the fill
-    if self.value then
-        love.graphics.setColor(self.colors.fillColor)
-        love.graphics.rectangle("fill", self.pos.x + self.outlineSize, self.pos.y + self.outlineSize, self.size.x - 2*self.outlineSize, self.size.y - 2*self.outlineSize)
-    end
+    -- Sets the font of the instance
+    love.graphics.setFont(self.font)
+
+    -- Set the color of the font
+    love.graphics.setColor(self.color)
+
+    -- Draw the text
+    love.graphics.print(self.value, self.pos.x, self.pos.y, self.rotation, self.size.x, self.size.y)
+
+    -- Reset font
+    love.graphics.setFont(previousFont)
 end
 
 function Module:Get_Value ()
@@ -95,10 +95,6 @@ end
 
 function Module:Set_Value (newValue)
     self.value = newValue
-end
-
-function Module:InvertValue ()
-    self.value = not self.value
 end
 
 return Module:New()

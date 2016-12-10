@@ -22,8 +22,11 @@ function Ink:Ink ()
     local nw = {}
 
     self.instances = {}
+    self.instancesOrder = {}
     self.font = love.graphics.newFont("Ink/fonts/FreeSans.ttf", 18)
     self.onHover = false
+
+    self.safeDelete = false
 
     self:New_Instance("Ink_origin", "Ink_empty", {position = {0, 0}, size = {0, 0}, value = "Ink ^^"})
 
@@ -35,31 +38,39 @@ function Ink:New_Instance (instance_name, module_name, inicial_values, parentNam
     -- This will execute the module file and execute the Ink_Start function of the module
     self.instances[instance_name] = assert( love.filesystem.load( "Ink/modules/" .. module_name .. ".lua" ) )() -- same, dofile ("Ink/modules/" .. module_name .. ".lua"), but dofile not working well in love2d
     self.instances[instance_name]:Ink_Start(inicial_values, self)
+    table.insert(self.instancesOrder, instance_name)
 
     if parentName ~= nil then
         self.instances[instance_name]:Set_Parent(parentName)
     elseif instance_name ~= "Ink_origin" then
         self.instances[instance_name]:Set_Parent("Ink_origin")
     end
+
+    self.instances[instance_name].pos.x = self.instances[self.instances[instance_name].parent].pos.x
+    self.instances[instance_name].pos.y = self.instances[self.instances[instance_name].parent].pos.y
 end
 
 function Ink:Delete_All_Instances ()
     self.instances = {}
+    self.instancesOrder = {}
     self:New_Instance("Ink_origin", "Ink_empty", {position = {0, 0}, size = {0, 0}, value = "Ink ^^"})
     self.onHover = false
 end
 
 -- Love functions>>
 function Ink:Update (dt)
-    for k,v in pairs(self.instances) do
-        self:Update_Parent(v, dt)
-        self:Detect_Visibility(v)
+    for i=1,#self.instancesOrder do
+        local instanceName = self.instancesOrder[i]
+        if instanceName ~= nil then
+            self:Update_Parent(self.instances[instanceName], dt)
+            self:Detect_Visibility(self.instances[instanceName])
 
-        if v.isVisible then
-            self:Hover(v)
-            v:Update(dt)
-            if love.mouse.isDown(1) then
-                v:MouseDown(love.mouse.getX(), love.mouse.getY(), 1)
+            if self.instances[instanceName].isVisible then
+                self:Hover(self.instances[instanceName])
+                self.instances[instanceName]:Update(dt)
+                if love.mouse.isDown(1) then
+                    self.instances[instanceName]:MouseDown(love.mouse.getX(), love.mouse.getY(), 1)
+                end
             end
         end
     end
@@ -74,9 +85,12 @@ function Ink:Draw ()
     local previousFont = love.graphics.getFont()
     love.graphics.setFont(self.font)
 
-    for k,v in pairs(self.instances) do
-        if v.isVisible then
-            v:Ink_Draw()
+    for i=1,#self.instancesOrder do
+        local instanceName = self.instancesOrder[i]
+        if instanceName ~= nil then
+            if self.instances[instanceName].isVisible then
+                self.instances[instanceName]:Ink_Draw()
+            end
         end
     end
 
@@ -88,33 +102,49 @@ function Ink:Draw ()
 end
 
 function Ink:MousePressed (x, y, btn, isTouch)
-    for k,v in pairs(self.instances) do
 
-        v:MousePressed(x, y, btn)
+    for i=1,#self.instancesOrder do
+        local instanceName = self.instancesOrder[i]
+        if instanceName ~= nil then
+            self.instances[instanceName]:MousePressed(x, y, btn)
+        end
     end
 end
 
 function Ink:MouseReleased (x, y, btn, isTouch)
-    for k,v in pairs(self.instances) do
-        v:MouseReleased(x, y, btn)
+    for i=1,#self.instancesOrder do
+        local instanceName = self.instancesOrder[i]
+        if instanceName ~= nil then
+            self.instances[instanceName]:MouseReleased(x, y, btn)
+        end
     end
 end
 
 function Ink:TextInput (text)
-    for k,v in pairs(self.instances) do
-        v:TextInput(text)
+
+    for i=1,#self.instancesOrder do
+        local instanceName = self.instancesOrder[i]
+        if instanceName ~= nil then
+            self.instances[instanceName]:TextInput(text)
+        end
     end
 end
 
 function Ink:Keypressed (key, scancode, isrepeat)
-    for k,v in pairs(self.instances) do
-        v:KeyPressed(key, scancode, isrepeat)
+    for i=1,#self.instancesOrder do
+        local instanceName = self.instancesOrder[i]
+        if instanceName ~= nil then
+            self.instances[instanceName]:KeyPressed(key, scancode, isrepeat)
+        end
     end
 end
 
 function Ink:Keyreleased (key)
-    for k,v in pairs(self.instances) do
-        v:KeyReleased(key)
+    for i=1,#self.instancesOrder do
+        local instanceName = self.instancesOrder[i]
+        if instanceName ~= nil then
+            self.instances[instanceName]:KeyReleased(key)
+        end
     end
 end
 
@@ -124,8 +154,30 @@ end
 
 function Ink:Update_Parent (v, dt)
     v.parentPos = self.instances[v.parent].pos
-    v.pos.x = self:BasicInterpolation(v.pos.x, v.localPos.x + v.parentPos.x, 0.05)
-    v.pos.y = self:BasicInterpolation(v.pos.y, v.localPos.y + v.parentPos.y, 0.05)
+
+    if (v.posInterpolDisabled ~= true) then
+        v.pos.x = self:BasicInterpolation(v.pos.x, v.localPos.x + v.parentPos.x, 3 * dt)
+        v.pos.y = self:BasicInterpolation(v.pos.y, v.localPos.y + v.parentPos.y, 3 * dt)
+    else
+        v.pos.x = v.localPos.x + v.parentPos.x
+        v.pos.y = v.localPos.y + v.parentPos.y
+    end
+
+    if (v.sizeInterpolDisabled ~= true) then
+        if type(v.size) == "table" then
+            v.size.x = self:BasicInterpolation(v.size.x, v.localSize.x, 3 * dt)
+            v.size.y = self:BasicInterpolation(v.size.y, v.localSize.y, 3 * dt)
+        else
+            v.size = self:BasicInterpolation(v.size, v.localSize, 3 * dt)
+        end
+    else
+        if type(v.size) == "table" then
+            v.size.x = v.localSize.x
+            v.size.y = v.localSize.y
+        else
+            v.size = v.localSize
+        end
+    end
 end
 
 function Ink:BasicInterpolation (initial, final, interpolation)
@@ -135,10 +187,7 @@ end
 
 function Ink:Detect_Visibility (v)
     local parentPos = v.parent ~= "" and self.instances[v.parent].pos or {x = 0, y = 0}
-    local distX = v.pos.x + parentPos.x
-    local distY = v.pos.y + parentPos.y
-
-    v.isVisible = distX <= love.graphics.getWidth() and distY <= love.graphics.getHeight()
+    v.isVisible = v.pos.x <= love.graphics.getWidth() and v.pos.y <= love.graphics.getHeight()
 end
 
 function Ink:Hover (v)

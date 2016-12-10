@@ -2,13 +2,14 @@
 local Module = {}
 function Module:New()
     -- ink properties:
-    self.parent = "Ink_origin"
+    self.parent    = "Ink_origin"
     self.parentPos = {x = 0, y = 0}
-    self.localPos = {x = 0, y = 0}
-    self.pos = {x = 0, y = 0}
-    self.size = {x = 0, y = 0}
+    self.localPos  = {x = 0, y = 0}
+    self.pos       = {x = 0, y = 0}
+    self.localSize = {x = 0, y = 0}
+    self.size      = {x = 0, y = 0}
     self.isVisible = true
-    self.geometry = "none"
+    self.geometry  = "none"
 
     self.value = "hi ^-^" --the .value property can be any type of value (number, string, function, etc)
     self.inHover = false
@@ -22,14 +23,11 @@ function Module:Set_Parent (name)
     self.parent = name;
 end
 
-function Module:Ink_Start (values, inkLib)
-    self.inkLib = inkLib
-
+function Module:Ink_Start (values)
     self.localPos.x = values.position[1]
     self.localPos.y = values.position[2]
-    self.size.x = values.size[1]
-    self.size.y = values.size[2]
-    self.value = values.value;
+    self.localSize.x = 1
+    self.localSize.y = 1
 end
 
 function Module:Update (dt)

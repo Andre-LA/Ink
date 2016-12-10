@@ -163,9 +163,9 @@ end
 
 function Switch ()
     ink:New_Instance("Btn_switch", "Ink_button", {
-        position = {love.graphics.getWidth() - 30, 10},
-        size = {20, 20},
-        text = "S",
+        position = {love.graphics.getWidth() - 100, 10},
+        size = {80, 20},
+        text = "Switch",
         value = function  ()
             if cena == 1 then
                 ink:Delete_All_Instances()
@@ -180,6 +180,7 @@ function Switch ()
             end
         end
     })
+    ink.instances["Btn_switch"].posInterpolDisabled = true
 end
 
 function love.load()

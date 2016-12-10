@@ -1,15 +1,16 @@
 local Module = {}
 function Module:New()
     -- ink properties:
-    self.parent = "Ink_origin"
+    self.parent    = "Ink_origin"
     self.parentPos = {x = 0, y = 0}
-    self.localPos = {x = 0, y = 0}
-    self.pos = {x = 0, y = 0}
-    self.size = {x = 0, y = 0}
+    self.localPos  = {x = 0, y = 0}
+    self.pos       = {x = 0, y = 0}
+    self.localSize = {x = 0, y = 0}
+    self.size      = {x = 0, y = 0}
     self.isVisible = true
-    self.geometry = "rectangle"
-    self.value = "hi ^-^" --the .value property can be any type of value (number, string, function, etc)
-    self.inHover = false
+    self.geometry  = "rectangle"
+    self.value     = ""
+    self.inHover   = false
 
     self.colors = {
         txtArea = {250, 250, 250, 255},
@@ -33,11 +34,10 @@ end
 
 function Module:Ink_Start (values, inkLib)
     self.inkLib = inkLib
-
     self.localPos.x = values.position[1]
     self.localPos.y = values.position[2]
-    self.size.x = values.size[1]
-    self.size.y = values.size[2]
+    self.localSize.x = values.size[1]
+    self.localSize.y = values.size[2]
     self.outlineSize = values.outlineSize;
     self.value = values.value;
 end

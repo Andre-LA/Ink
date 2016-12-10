@@ -2,15 +2,16 @@ local Module = {}
 -- Create modules using this as reference
 function Module:New()
     -- ink properties:
-    self.parent = "Ink_origin"
+    self.parent    = "Ink_origin"
     self.parentPos = {x = 0, y = 0}
-    self.localPos = {x = 0, y = 0}
-    self.pos = {x = 0, y = 0}
-    self.size = 0
+    self.localPos  = {x = 0, y = 0}
+    self.pos       = {x = 0, y = 0}
+    self.localSize = 0
+    self.size      = 0
     self.isVisible = true
-    self.geometry = "circle"
+    self.geometry  = "circle"
 
-    self.value = false
+    self.value   = false
     self.inHover = false
 
     self.colors = {
@@ -34,7 +35,7 @@ function Module:Ink_Start (values, inkLib)
 
     self.localPos.x = values.position[1]
     self.localPos.y = values.position[2]
-    self.size = values.size
+    self.localSize = values.size
     self.value = values.value;
     self.outlineSize = values.outlineSize
 end
