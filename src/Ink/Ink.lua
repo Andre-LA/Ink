@@ -14,7 +14,7 @@ utf8 = require "utf8"
 --   █████████████   █     ████     ----
 --                                  ----
 --------------------------------------
--- Ink by Andre-LA, member of Love2D Brasil group
+-- Ink by Andre-LA
 
 local Ink = {}
 
@@ -34,20 +34,23 @@ function Ink:Ink ()
     return nw
 end
 
-function Ink:New_Instance (instance_name, module_name, inicial_values, parentName)
-    -- This will execute the module file and execute the Ink_Start function of the module
-    self.instances[instance_name] = assert( love.filesystem.load( "Ink/modules/" .. module_name .. ".lua" ) )() -- same, dofile ("Ink/modules/" .. module_name .. ".lua"), but dofile not working well in love2d
-    self.instances[instance_name]:Ink_Start(inicial_values, self)
-    table.insert(self.instancesOrder, instance_name)
+function Ink:New_Instance (instance_name, module_name, initial_values)
+    -- Load module
+    self.instances[instance_name] = assert(love.filesystem.load("Ink/modules/" .. module_name .. ".lua"))()
 
-    if parentName ~= nil then
-        self.instances[instance_name]:Set_Parent(parentName)
-    elseif instance_name ~= "Ink_origin" then
-        self.instances[instance_name]:Set_Parent("Ink_origin")
-    end
+    -- Start module
+    self.instances[instance_name]:Start(initial_values, self, instance_name)
 
+    -- Set the name of the module and the birth position will be the parent position
+    self.instances[instance_name].name = instance_name
     self.instances[instance_name].pos.x = self.instances[self.instances[instance_name].parent].pos.x
     self.instances[instance_name].pos.y = self.instances[self.instances[instance_name].parent].pos.y
+
+    -- The parentPos will use the memory of the parent position
+    self.instances[instance_name].parentPos = self.instances[self.instances[instance_name].parent].pos
+
+    -- Register this module in instancesOrder table
+    table.insert(self.instancesOrder, instance_name)
 end
 
 function Ink:Delete_All_Instances ()
@@ -62,6 +65,7 @@ function Ink:update (dt)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+
             self:Update_Parent(self.instances[instanceName], dt)
             self:Detect_Visibility(self.instances[instanceName])
 
@@ -102,7 +106,6 @@ function Ink:draw ()
 end
 
 function Ink:mousepressed (x, y, btn, isTouch)
-
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
@@ -153,31 +156,11 @@ end
 -- Ink functions>>
 
 function Ink:Update_Parent (v, dt)
-    v.parentPos = self.instances[v.parent].pos
+        v.pos.x = v.posInterpolDisabled ~= true and self:BasicInterpolation(v.pos.x, v.localPos.x + v.parentPos.x, 3 * dt) or v.localPos.x + v.parentPos.x
+        v.pos.y = v.posInterpolDisabled ~= true and self:BasicInterpolation(v.pos.y, v.localPos.y + v.parentPos.y, 3 * dt) or v.localPos.y + v.parentPos.y
 
-    if (v.posInterpolDisabled ~= true) then
-        v.pos.x = self:BasicInterpolation(v.pos.x, v.localPos.x + v.parentPos.x, 3 * dt)
-        v.pos.y = self:BasicInterpolation(v.pos.y, v.localPos.y + v.parentPos.y, 3 * dt)
-    else
-        v.pos.x = v.localPos.x + v.parentPos.x
-        v.pos.y = v.localPos.y + v.parentPos.y
-    end
-
-    if (v.sizeInterpolDisabled ~= true) then
-        if type(v.size) == "table" then
-            v.size.x = self:BasicInterpolation(v.size.x, v.localSize.x, 3 * dt)
-            v.size.y = self:BasicInterpolation(v.size.y, v.localSize.y, 3 * dt)
-        else
-            v.size = self:BasicInterpolation(v.size, v.localSize, 3 * dt)
-        end
-    else
-        if type(v.size) == "table" then
-            v.size.x = v.localSize.x
-            v.size.y = v.localSize.y
-        else
-            v.size = v.localSize
-        end
-    end
+        v.size.x = v.sizeInterpolDisabled ~= true and self:BasicInterpolation(v.size.x, v.localSize.x, 3 * dt) or v.localSize.x
+        v.size.y = v.sizeInterpolDisabled ~= true and self:BasicInterpolation(v.size.y, v.localSize.y, 3 * dt) or v.localSize.y
 end
 
 function Ink:BasicInterpolation (initial, final, interpolation)

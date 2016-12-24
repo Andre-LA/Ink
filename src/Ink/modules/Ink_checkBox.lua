@@ -1,83 +1,22 @@
-local Module = {}
-function Module:New()
+local Checkbox = assert(love.filesystem.load("Ink/modules/Ink_module.lua"))()
+function Checkbox:Start(values, inkLib, name)
+    Checkbox(values, inkLib, name)
     -- ink properties:
-    self.parent    = "Ink_origin"
-    self.parentPos = {x = 0, y = 0}
-    self.localPos  = {x = 0, y = 0}
-    self.pos       = {x = 0, y = 0}
-    self.localSize = {x = 0, y = 0}
-    self.size      = {x = 0, y = 0}
-    self.isVisible = true
-    self.geometry  = "rectangle"
-
-    self.value = false
-    self.inHover = false
-
     self.colors = {
         backgroundColor = {240, 240, 240, 255},
         fillColor = {140, 140, 140, 255}
     }
 
     self.outlineSize = 4;
-
-    local nw = {}
-    setmetatable(nw, {__index = self})
-    return nw
 end
 
-function Module:Set_Parent (name)
-    self.parent = name;
-end
-
-function Module:Ink_Start (values, inkLib)
-    self.inkLib = inkLib
-
-    self.localPos.x = values.position[1]
-    self.localPos.y = values.position[2]
-    self.localSize.x = values.size[1]
-    self.localSize.y = values.size[2]
-    self.value = values.value;
-    self.outlineSize = values.outlineSize
-end
-
-function Module:Update (dt)
-end
-
-function Module:Hover ()
-
-end
-
-function Module:NotHover ()
-
-end
-
-function Module:MousePressed (x, y, b)
+function Checkbox:MousePressed (x, y, b)
     if self.inHover then
         self.value = not self.value
     end
 end
 
-function Module:MouseDown (x, y, b)
-
-end
-
-function Module:MouseReleased (x, y, b)
-
-end
-
-function Module:TextInput (text)
-
-end
-
-function Module:KeyPressed (key, scancode, isrepeat)
-
-end
-
-function Module:KeyReleased (key)
-
-end
-
-function Module:Ink_Draw ()
+function Checkbox:Ink_Draw ()
     -- Draw background
     love.graphics.setColor(self.colors.backgroundColor)
     love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
@@ -89,16 +28,8 @@ function Module:Ink_Draw ()
     end
 end
 
-function Module:Get_Value ()
-    return self.value
-end
-
-function Module:Set_Value (newValue)
-    self.value = newValue
-end
-
-function Module:InvertValue ()
+function Checkbox:InvertValue ()
     self.value = not self.value
 end
 
-return Module:New()
+return Checkbox
