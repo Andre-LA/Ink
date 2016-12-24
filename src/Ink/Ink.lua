@@ -51,6 +51,9 @@ function Ink:New_Instance (instance_name, module_name, initial_values)
 
     -- Register this module in instancesOrder table
     table.insert(self.instancesOrder, instance_name)
+
+    -- Return the instance
+    return self.instances[instance_name]
 end
 
 function Ink:Delete_All_Instances ()

@@ -44,9 +44,9 @@ function Module:Set_Position (x, y)
     self.localPos.y = y
 end
 
-function Module:Translate (translate)
-    self.localPos.x = self.localPos.x + translate[1]
-    self.localPos.y = self.localPos.y + translate[2]
+function Module:Translate (translateX, translateY)
+    self.localPos.x = self.localPos.x + translateX
+    self.localPos.y = self.localPos.y + translateY
 end
 
 function Module:Set_Parent (name)
