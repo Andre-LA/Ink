@@ -22,11 +22,10 @@ function Ink:Ink ()
     local nw = {}
 
     self.instances = {}
+    self.groups = {}
     self.instancesOrder = {}
     self.font = love.graphics.newFont("Ink/fonts/FreeSans.ttf", 18)
     self.onHover = false
-
-    self.safeDelete = false
 
     self:New_Instance("Ink_origin", "Ink_empty", {position = {0, 0}, size = {0, 0}, value = "Ink ^^"})
 
@@ -54,6 +53,28 @@ function Ink:New_Instance (instance_name, module_name, initial_values)
 
     -- Return the instance
     return self.instances[instance_name]
+end
+
+function Ink:New_Group (groupName, instances)
+    -- Create table
+    self.groups[groupName] = {}
+
+    -- Link the instances in this group if possible
+    if instances ~= nil then
+        for i=1, #instances do
+            table.insert(self.groups[groupName], instances[i])
+        end
+    end
+
+    -- return group
+    return self.groups[groupName]
+end
+
+function Ink:Insert_On_Group (groupName, instances)
+    -- Link the instances in this group
+    for i=1, #instances do
+        table.insert(self.groups[groupName], instances[i])
+    end
 end
 
 function Ink:Delete_All_Instances ()
@@ -208,7 +229,7 @@ function Ink:Detect_Hover (type, pos, size)
         end
     elseif type == "circle" then
         if math.sqrt(math.pow(math.abs(mousePosx - pos.x), 2)
-        + math.pow(math.abs(mousePosy - pos.y), 2)) <= size then
+        + math.pow(math.abs(mousePosy - pos.y), 2)) <= size.x then
             ret = true
         end
     end

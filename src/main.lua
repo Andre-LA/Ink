@@ -2,7 +2,6 @@ ink = require "Ink/Ink"
 -- arquivo exemplo (example file)
 
 function love.load()
-    
 end
 
 function love.update(dt)

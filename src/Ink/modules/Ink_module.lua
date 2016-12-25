@@ -44,9 +44,27 @@ function Module:Set_Position (x, y)
     self.localPos.y = y
 end
 
-function Module:Translate (translateX, translateY)
-    self.localPos.x = self.localPos.x + translateX
-    self.localPos.y = self.localPos.y + translateY
+function Module:Translate (x, y)
+    self.localPos.x = self.localPos.x + x
+    self.localPos.y = self.localPos.y + y
+end
+
+function Module:Get_Global_Size ()
+    return self.size.x, self.size.y
+end
+
+function Module:Get_Local_Size ()
+    return self.localSize.x, self.localSize.y
+end
+
+function Module:Set_Size (x, y)
+    self.localSize.x = x
+    self.localSize.y = y
+end
+
+function Module:Resize (x, y)
+    self.localSize.x = self.localSize.x + x
+    self.localSize.y = self.localSize.y + y
 end
 
 function Module:Set_Parent (name)
