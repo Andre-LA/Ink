@@ -17,7 +17,6 @@ function Panel:MouseDown (x, y, b)
             for i=1,#self.group do
                 self.group[i].posInterpolDisabled = true
             end
-
         else
             self.posInterpolDisabled = true
         end
