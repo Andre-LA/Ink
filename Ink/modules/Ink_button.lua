@@ -1,6 +1,6 @@
 --module "Ink_button"
 local Button = assert(love.filesystem.load("Ink/modules/Ink_module.lua"))()
-function Button:Start (values, inkLib, name)
+function Button:start (values, inkLib, name)
     Button(values, inkLib, name)
     self.pivot = {x = 0.5, y = 0.5}
 
@@ -15,30 +15,30 @@ function Button:Start (values, inkLib, name)
     self.text_color = self.colors[1]
 end
 
-function Button:Hover ()
+function Button:hover ()
     if self.button_color ~= self.colors[4] then
         self.button_color = self.colors[3]
     end
 end
 
-function Button:NotHover ()
+function Button:nothover ()
     self.button_color = self.colors[2]
 end
 
-function Button:MousePressed (x, y, b)
+function Button:mousepressed (x, y, b)
     if self.inHover then
         self.button_color = self.colors[4]
         self.value()
     end
 end
 
-function Button:MouseReleased (x, y, b)
+function Button:mousereleased (x, y, b)
     if self.inHover then
         self.button_color = self.colors[3]
     end
 end
 
-function Button:Ink_Draw ()
+function Button:draw ()
     -- Draw button background
     love.graphics.setColor(self.button_color)
     love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
@@ -48,7 +48,7 @@ function Button:Ink_Draw ()
     love.graphics.print(self.text, self.pos.x + (self.size.x * self.pivot.x) - (love.graphics.getFont():getWidth(self.text)/2), self.pos.y + (self.size.y * self.pivot.y) - (love.graphics.getFont():getHeight("a")/2))
 end
 
-function Button:Set_Text (text)
+function Button:setText (text)
     self.text = text
 end
 

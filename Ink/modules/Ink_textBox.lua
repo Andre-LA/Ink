@@ -1,5 +1,5 @@
 local Textbox = assert(love.filesystem.load("Ink/modules/Ink_module.lua"))()
-function Textbox:Start(values, inkLib, name)
+function Textbox:start(values, inkLib, name)
     Textbox(values, inkLib, name)
     self.colors = {
         txtArea = {250, 250, 250, 255},
@@ -13,7 +13,7 @@ function Textbox:Start(values, inkLib, name)
     self.deltaTime = 0
 end
 
-function Textbox:Update (dt)
+function Textbox:update (dt)
     if isActive then
         self.deltaTime = self.deltaTime + dt
 
@@ -24,7 +24,7 @@ function Textbox:Update (dt)
     end
 end
 
-function Textbox:MousePressed (x, y, b)
+function Textbox:mousepressed (x, y, b)
     if self.inHover and self.isActive == not self.inHover then
         self.outlineSize = self.outlineSize * 1.5
 
@@ -43,11 +43,11 @@ function Textbox:MousePressed (x, y, b)
     self.isActive = self.inHover
 end
 
-function Textbox:TextInput (text)
+function Textbox:textinput (text)
     self.value = self.value .. text
 end
 
-function Textbox:KeyPressed (key, scancode, isrepeat)
+function Textbox:keypressed (key, scancode, isrepeat)
     if key == "backspace" then
         -- get the byte offset to the last UTF-8 character in the string.
         local byteoffset = utf8.offset(self.value, -1)
@@ -60,7 +60,7 @@ function Textbox:KeyPressed (key, scancode, isrepeat)
     end
 end
 
-function Textbox:Ink_Draw ()
+function Textbox:draw ()
     -- Draw fist background, this background will be the outline
     love.graphics.setColor(self.colors.txtOutline)
     love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)

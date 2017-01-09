@@ -1,14 +1,13 @@
 local Panel = assert(love.filesystem.load("Ink/modules/Ink_module.lua"))()
 
-function Panel:Start (values, inkLib, name)
+function Panel:start (values, inkLib, name)
     self.isGrabbed = false
     self.isResizable = true
     self.isOnResize = false
     Panel(values, inkLib, name)
-
 end
 
-function Panel:MouseDown (x, y, b)
+function Panel:mousedown (x, y, b)
     -- grab control
     if self.inHover and y < self.pos.y + 20 and b == 1 and not self.isOnResize then
         self.isGrabbed = true
@@ -28,7 +27,7 @@ function Panel:MouseDown (x, y, b)
     end
 end
 
-function Panel:MouseReleased (x, y, b)
+function Panel:mousereleased (x, y, b)
     self.isGrabbed = false
     self.isOnResize = false
     if self.group ~= nil then
@@ -42,21 +41,21 @@ function Panel:MouseReleased (x, y, b)
     self.sizeInterpolDisabled = false
 end
 
-function Panel:Update ()
+function Panel:update ()
     if self.isGrabbed then
-        self:Set_Position(love.mouse.getX() - self.size.x/2, love.mouse.getY() - 20/2)
+        self:setPosition(love.mouse.getX() - self.size.x/2, love.mouse.getY() - 20/2)
     end
 
     if self.isOnResize then
         if self.size.x > 40 and self.size.y > 40 then
-            self:Set_Size(math.abs(love.mouse.getX() - self.pos.x), math.abs(love.mouse.getY() - self.pos.y))
+            self:setSize(math.abs(love.mouse.getX() - self.pos.x), math.abs(love.mouse.getY() - self.pos.y))
         elseif love.mouse.getX() > self.pos.x + self.size.x or love.mouse.getY() > self.pos.y + self.size.y then
-            self:Set_Size(math.abs(love.mouse.getX() - self.pos.x), math.abs(love.mouse.getY() - self.pos.y))
+            self:setSize(math.abs(love.mouse.getX() - self.pos.x), math.abs(love.mouse.getY() - self.pos.y))
         end
     end
 end
 
-function Panel:Ink_Draw (dt)
+function Panel:draw (dt)
 
     -- window
     love.graphics.setColor(100,100,100)

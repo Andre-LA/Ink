@@ -1,11 +1,11 @@
 -- Create modules using this as reference
 local Text = assert(love.filesystem.load("Ink/modules/Ink_module.lua"))()
-function Text:Start(values, inkLib, name)
+function Text:start(values, inkLib, name)
     Text(values, inkLib, name)
     self.color = {0,0,0,255}
 end
 
-function Text:Ink_Draw ()
+function Text:draw ()
     -- Saves the Ink font for reset in the end
     local previousFont = self.inkLib.font
 
