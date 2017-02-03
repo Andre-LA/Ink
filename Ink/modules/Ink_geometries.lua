@@ -2,8 +2,8 @@
 local Geometries = assert(love.filesystem.load("Ink/modules/Ink_module.lua"))()
 
 function Geometries:start(values, inkLib, name)
-    Geometries(values, inkLib, name)
     self.color = {20,20,20,255}
+    Geometries(values, inkLib, name)
 end
 
 function Geometries:draw ()
