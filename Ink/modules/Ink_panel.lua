@@ -5,6 +5,7 @@ function Panel:start (values, inkLib, name)
     self.isResizable = true
     self.isOnResize = false
     Panel(values, inkLib, name)
+    self.lockHover = false
     self.pivotBkup = {x = self.pivot.x, y = self.pivot.y}
 end
 
