@@ -3,16 +3,17 @@ local Module = {}
 
 setmetatable(Module, {
     __call = function  (cls, ...)
-        return cls:New(...)
+        return cls:new(...)
     end
 })
 
-function Module:New (values, inkLib, name)
+function Module:new (values, inkLib, name)
     -- Default properties:
     self.parent    = "Ink_origin"
-    self.parentPos = {x = 0, y = 0}
-    self.pos       = {x = 0, y = 0}
-    self.size      = {x = 0, y = 0}
+    self.parentPos = {x = 0,   y = 0}
+    self.pos       = {x = 0,   y = 0}
+    self.pivot     = {x = 0.5, y = 0.5}
+    self.size      = {x = 0,   y = 0}
     self.isVisible = true
     self.geometry  = "rectangle"
     self.inHover   = false

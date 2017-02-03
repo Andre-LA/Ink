@@ -84,7 +84,7 @@ function Ink:deleteAllInstances ()
     self.onHover = false
 end
 
--- Love functions>>
+-- Love callbacks>>
 function Ink:update (dt)
     local aInstanceHaveHover = false
     for i=1,#self.instancesOrder do
@@ -363,16 +363,16 @@ function Ink:joystickremoved (joystick)
     end
 end
 
---<<Love functions
+--<<Love callbacks
 
 -- Ink functions>>
 
 function Ink:updateparent (v, dt)
-        v.pos.x = v.posInterpolDisabled ~= true and self:basicInterpolation(v.pos.x, v.localPos.x + v.parentPos.x, 3 * dt) or v.localPos.x + v.parentPos.x
-        v.pos.y = v.posInterpolDisabled ~= true and self:basicInterpolation(v.pos.y, v.localPos.y + v.parentPos.y, 3 * dt) or v.localPos.y + v.parentPos.y
+    v.size.x = v.sizeInterpolDisabled ~= true and self:basicInterpolation(v.size.x, v.localSize.x, 3 * dt) or v.localSize.x
+    v.size.y = v.sizeInterpolDisabled ~= true and self:basicInterpolation(v.size.y, v.localSize.y, 3 * dt) or v.localSize.y
 
-        v.size.x = v.sizeInterpolDisabled ~= true and self:basicInterpolation(v.size.x, v.localSize.x, 3 * dt) or v.localSize.x
-        v.size.y = v.sizeInterpolDisabled ~= true and self:basicInterpolation(v.size.y, v.localSize.y, 3 * dt) or v.localSize.y
+    v.pos.x = v.posInterpolDisabled ~= true and self:basicInterpolation(v.pos.x, v.localPos.x - (v.size.x * v.pivot.x) + v.parentPos.x, 3 * dt) or v.localPos.x + (v.size.x * v.pivot.x) + v.parentPos.x
+    v.pos.y = v.posInterpolDisabled ~= true and self:basicInterpolation(v.pos.y, v.localPos.y - (v.size.y * v.pivot.y) + v.parentPos.y, 3 * dt) or v.localPos.y + (v.size.y * v.pivot.y) + v.parentPos.y
 end
 
 function Ink:basicInterpolation (initial, final, interpolation)
