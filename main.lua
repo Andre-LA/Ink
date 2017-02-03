@@ -1,11 +1,21 @@
 ink = require "Ink/Ink"
 -- arquivo exemplo (example file)
 function love.load()
-    rect = ink:newInstance("rect", "Ink_panel", {
-        position = {100, 100},
-        size = {100, 50},
+    panel = ink:newInstance("panel", "Ink_panel", {
+        position = {200, 200},
+        size = {300, 150},
         color = {230, 230, 230, 255},
         text = "olá"
+    })
+
+    button = ink:newInstance("btn", "Ink_button", {
+        position = {70, 70},
+        size = {100, 50},
+        text = "olá botão",
+        value = function ()
+            print("logging")
+        end,
+        parent = "panel"
     })
 end
 function love.update(dt)

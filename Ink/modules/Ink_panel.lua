@@ -5,6 +5,7 @@ function Panel:start (values, inkLib, name)
     self.isResizable = true
     self.isOnResize = false
     Panel(values, inkLib, name)
+    self.lockHover = false
 end
 
 function Panel:mousepressed (x, y, b)

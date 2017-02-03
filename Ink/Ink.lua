@@ -396,7 +396,7 @@ function Ink:hover (v)
         if not self.onHover then
             v:hover()
             v.inHover = true
-            self.onHover = true
+            self.onHover = v.lockHover == true and true or self.onHover
         end
     else
         v.inHover = false
