@@ -5,14 +5,12 @@ function Panel:start (values, inkLib, name)
     self.isResizable = true
     self.isOnResize = false
     Panel(values, inkLib, name)
-    self.pivotBkup = {x = self.pivot.x, y = self.pivot.y}
 end
 
 function Panel:mousepressed (x, y, b)
     -- grab control
     print("logging")
     if self.inHover and y < self.pos.y + 20 and b == 1 and not self.isOnResize then
-        self.pivotBkup = {x = self.pivot.x, y = self.pivot.y}
         self.isGrabbed = true
         self.pivot = {x = 0, y = 0}
 
@@ -33,9 +31,6 @@ end
 
 function Panel:mousereleased (x, y, b)
     self.isGrabbed = false
-    print(self.pivotBkup.x, self.pivotBkup.y)
-
-    --self.pivot = {x = self.pivotBkup.x, y = self.pivotBkup.y}
     self.isOnResize = false
     if self.group ~= nil then
         for i=1,#self.group do
