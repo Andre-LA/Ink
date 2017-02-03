@@ -11,12 +11,13 @@ function Module:new (values, inkLib, name)
     -- Default properties:
     self.parent    = "Ink_origin"
     self.parentPos = {x = 0,   y = 0}
-    self.pos       = {x = 0,   y = 0}
+    self.pos       = {x = values.position[1],   y = values.position[2]}
     self.pivot     = {x = 0.5, y = 0.5}
     self.size      = {x = 0,   y = 0}
     self.isVisible = true
     self.geometry  = "rectangle"
     self.inHover   = false
+    self.lockHover = true
 
     -- Variable properties:
     self.name = name
