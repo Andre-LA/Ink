@@ -1,13 +1,20 @@
 ink = require "Ink/Ink"
 -- arquivo exemplo (example file)
 function love.load()
-    cont = 0
+    rect = ink:newInstance("rect", "Ink_panel", {
+        position = {100, 100},
+        size = {100, 50},
+        color = {230, 230, 230, 255},
+        text = "olá"
+    })
 end
 function love.update(dt)
     ink:update(dt)
 end
 function love.draw()
     ink:draw()
+    love.graphics.line(love.mouse.getX(), 20, love.mouse.getX(), 500)
+    love.graphics.line(20, love.mouse.getY(), 500, love.mouse.getY())
 end
 function love.mousepressed(x, y, button, isTouch)
     ink:mousepressed(x, y, button, isTouch)
