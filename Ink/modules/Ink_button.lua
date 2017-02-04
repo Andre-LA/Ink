@@ -28,7 +28,7 @@ end
 function Button:mousepressed (x, y, b)
     if self.inHover then
         self.button_color = self.colors[4]
-        self.value()
+        self:value()
     end
 end
 
