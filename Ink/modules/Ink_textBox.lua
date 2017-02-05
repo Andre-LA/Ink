@@ -44,11 +44,13 @@ function Textbox:mousepressed (x, y, b)
 end
 
 function Textbox:textinput (text)
-    self.value = self.value .. text
+    if self.isActive then
+        self.value = self.value .. text
+    end
 end
 
 function Textbox:keypressed (key, scancode, isrepeat)
-    if key == "backspace" then
+    if key == "backspace" and self.isActive then
         -- get the byte offset to the last UTF-8 character in the string.
         local byteoffset = utf8.offset(self.value, -1)
 
