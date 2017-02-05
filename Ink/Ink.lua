@@ -94,12 +94,11 @@ function Ink:update (dt)
             self:detectvisibility(self.instances[instanceName])
 
             if self.instances[instanceName].isVisible then
+                self:hover(self.instances[instanceName])
                 if self.instances[instanceName].inHover == true then
-                    self.instances[instanceName]:hover()
                     aInstanceHaveHover = true
                 end
 
-                self:hover(self.instances[instanceName])
                 self.instances[instanceName]:update(dt)
                 if love.mouse.isDown(1) then
                     self.instances[instanceName]:mousedown(love.mouse.getX(), love.mouse.getY(), 1)
@@ -119,6 +118,9 @@ function Ink:draw ()
     local previousFont = love.graphics.getFont()
     love.graphics.setFont(self.font)
 
+    -- backup colors
+    local previousColor = {love.graphics.getColor()}
+
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
@@ -127,6 +129,9 @@ function Ink:draw ()
             end
         end
     end
+
+    -- reset colors
+    love.graphics.setColor(previousColor)
 
     -- reset coordinate system
     love.graphics.pop()
@@ -393,10 +398,10 @@ function Ink:hover (v)
 
     if inHover then
         -- execute the Hover function of the module
+        v:hover()
+        v.inHover = true
         if not self.onHover then
-            v:hover()
-            v.inHover = true
-            self.onHover = v.lockHover == true and true or self.onHover
+            self.onHover = true
         end
     else
         v.inHover = false
