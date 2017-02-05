@@ -2,7 +2,6 @@
 local Button = assert(love.filesystem.load("Ink/modules/Ink_module.lua"))()
 function Button:start (values, inkLib, name)
     Button(values, inkLib, name)
-    self.pivot = {x = 0.5, y = 0.5}
 
     self.colors = {
         {250, 250, 250},
@@ -43,9 +42,8 @@ function Button:draw ()
     love.graphics.setColor(self.button_color)
     love.graphics.rectangle("fill", self.pos.x, self.pos.y, self.size.x, self.size.y)
 
-    -- Draw button text, the text position = button position + (button size * pivot) - half size of the button text
     love.graphics.setColor(self.text_color)
-    love.graphics.print(self.text, self.pos.x + (self.size.x * self.pivot.x) - (love.graphics.getFont():getWidth(self.text)/2), self.pos.y + (self.size.y * self.pivot.y) - (love.graphics.getFont():getHeight("a")/2))
+    love.graphics.print(self.text, self.pos.x + self.size.x/2 - (love.graphics.getFont():getWidth(self.text)/2) , self.pos.y + self.size.y/2 - (love.graphics.getFont():getHeight(self.text)/2) )
 end
 
 function Button:setText (text)
