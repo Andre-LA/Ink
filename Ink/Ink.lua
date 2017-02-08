@@ -94,6 +94,8 @@ function Ink:update (dt)
             self:detectvisibility(self.instances[instanceName])
 
             if self.instances[instanceName].isVisible then
+                self.instances[instanceName]:exeupdateList(dt)
+
                 self:hover(self.instances[instanceName])
                 if self.instances[instanceName].inHover == true then
                     aInstanceHaveHover = true
@@ -144,6 +146,7 @@ function Ink:textinput (text)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exetextinputList(text)
             self.instances[instanceName]:textinput(text)
         end
     end
@@ -153,6 +156,7 @@ function Ink:keypressed (key, scancode, isrepeat)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exekeypressedList(key, scancode, isrepeat)
             self.instances[instanceName]:keypressed(key, scancode, isrepeat)
         end
     end
@@ -162,6 +166,7 @@ function Ink:keyreleased (key)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exekeyreleasedList(key)
             self.instances[instanceName]:keyreleased(key)
         end
     end
@@ -171,6 +176,7 @@ function Ink:directorydropped ()
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exedirectorydroppedList()
             self.instances[instanceName]:directorydropped ()
         end
     end
@@ -179,6 +185,7 @@ function Ink:filedropped (file)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exefiledroppedList(file)
             self.instances[instanceName]:filedropped (file)
         end
     end
@@ -187,6 +194,7 @@ function Ink:focus (focus)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exefocusList(focus)
             self.instances[instanceName]:focus (focus)
         end
     end
@@ -195,6 +203,7 @@ function Ink:lowmemory ()
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exelowmemoryList()
             self.instances[instanceName]:lowmemory ()
         end
     end
@@ -203,6 +212,7 @@ function Ink:mousefocus (focus)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exemousefocusList(focus)
             self.instances[instanceName]:mousefocus (focus)
         end
     end
@@ -211,6 +221,7 @@ function Ink:mousemoved (x, y, dx, dy, istouch)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exemousemovedList(x, y, dx, dy, istouch)
             self.instances[instanceName]:mousemoved (x, y, dx, dy, istouch)
         end
     end
@@ -219,6 +230,7 @@ function Ink:mousepressed (x, y, button, istouch)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exemousepressedList(x, y, button, istouch)
             self.instances[instanceName]:mousepressed (x, y, button, istouch, instanceName)
         end
     end
@@ -227,6 +239,7 @@ function Ink:mousereleased (x, y, button, istouch)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exemousereleasedList(x, y, button, istouch)
             self.instances[instanceName]:mousereleased (x, y, button, istouch)
         end
     end
@@ -235,6 +248,7 @@ function Ink:quit()
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exequitList()
             self.instances[instanceName]:quit()
         end
     end
@@ -243,6 +257,7 @@ function Ink:touchmoved (id, x, y, dx, dy, pressure)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exetouchmovedList(id, x, y, dx, dy, pressure)
             self.instances[instanceName]:touchmoved (id, x, y, dx, dy, pressure)
         end
     end
@@ -251,6 +266,7 @@ function Ink:touchpressed (id, x, y, dx, dy, pressure)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exetouchpressedList(id, x, y, dx, dy, pressure)
             self.instances[instanceName]:touchpressed (id, x, y, dx, dy, pressure)
         end
     end
@@ -259,6 +275,7 @@ function Ink:touchreleased (id, x, y, dx, dy, pressure)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exetouchreleasedList(id, x, y, dx, dy, pressure)
             self.instances[instanceName]:touchreleased (id, x, y, dx, dy, pressure)
         end
     end
@@ -267,6 +284,7 @@ function Ink:visible(visible)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exevisibleList(visible)
             self.instances[instanceName]:visible(visible)
         end
     end
@@ -275,6 +293,7 @@ function Ink:wheelmoved (x, y)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exewheelmovedList(x, y)
             self.instances[instanceName]:wheelmoved (x, y)
         end
     end
@@ -283,6 +302,7 @@ function Ink:resize(w, h)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exeresizeList(w, h)
             self.instances[instanceName]:resize(w, h)
         end
     end
@@ -291,6 +311,7 @@ function Ink:textedited (text, start, length)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exetexteditedList(text, start, length)
             self.instances[instanceName]:textedited (text, start, length)
         end
     end
@@ -299,6 +320,7 @@ function Ink:gamepadaxis (joystick, axis, value)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exegamepadaxisList(joystick, axis, value)
             self.instances[instanceName]:gamepadaxis (joystick, axis, value)
         end
     end
@@ -307,6 +329,7 @@ function Ink:gamepadpressed (joystick, button)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exegamepadpressedList(joystick, button)
             self.instances[instanceName]:gamepadpressed (joystick, button)
         end
     end
@@ -315,6 +338,7 @@ function Ink:gamepadreleased (joystick, button)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exegamepadreleasedList(joystick, button)
             self.instances[instanceName]:gamepadreleased (joystick, button)
         end
     end
@@ -323,6 +347,7 @@ function Ink:joystickadded (joystick)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exejoystickaddedList(joystick)
             self.instances[instanceName]:joystickadded (joystick)
         end
     end
@@ -331,6 +356,7 @@ function Ink:joystickaxis (joystick, axis, value)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exejoystickaxisList(joystick, axis, value)
             self.instances[instanceName]:joystickaxis (joystick, axis, value)
         end
     end
@@ -339,6 +365,7 @@ function Ink:joystickhat (joystick, hat, direction)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exejoystickhatList(joystick, hat, direction)
             self.instances[instanceName]:joystickhat (joystick, hat, direction)
         end
     end
@@ -347,6 +374,7 @@ function Ink:joystickpressed (joystick, button)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exejoystickpressedList(joystick, button)
             self.instances[instanceName]:joystickpressed (joystick, button)
         end
     end
@@ -355,6 +383,7 @@ function Ink:joystickreleased (joystick, button)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exejoystickreleasedList(joystick, button)
             self.instances[instanceName]:joystickreleased (joystick, button)
         end
     end
@@ -363,6 +392,7 @@ function Ink:joystickremoved (joystick)
     for i=1,#self.instancesOrder do
         local instanceName = self.instancesOrder[i]
         if instanceName ~= nil then
+            self.instances[instanceName]:exejoystickremovedList(joystick)
             self.instances[instanceName]:joystickremoved (joystick)
         end
     end
