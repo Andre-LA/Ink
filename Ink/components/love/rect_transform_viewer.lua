@@ -1,9 +1,9 @@
 local RectTransformViewer = {}
 RectTransformViewer.__index = RectTransformViewer
 
-function RectTransformViewer:new (ink, element, parameters)
+function RectTransformViewer:new (ink, element, parameters, name)
     setmetatable(RectTransformViewer, {__index = ink.COMPONENT})
-    ink.COMPONENT.new(self, ink, element, 200, parameters.parentId)
+    ink.COMPONENT.new(self, ink, element, parameters.parentId, name)
     setmetatable(self, RectTransformViewer)
 
     return self

@@ -1,9 +1,9 @@
 local RectTransform = {}
 RectTransform.__index = RectTransform
 
-function RectTransform:new (ink, element, parameters)
+function RectTransform:new (ink, element, parameters, name)
     setmetatable(RectTransform, {__index = ink.COMPONENT})
-    ink.COMPONENT.new(self, ink, element, 1, parameters.parentId)
+    ink.COMPONENT.new(self, ink, element, parameters.parentId, name)
     setmetatable(self, RectTransform)
 
     -- if 'parameters' is nil, then provide the default 'parameters'
@@ -27,7 +27,7 @@ function RectTransform:new (ink, element, parameters)
         left = parameters.offset.left,
     }
 
-    -- link type of each side, can be true or false, true means 'linked'
+    -- link type of each side, can be true or false, true means 'linked', but this property is not used yet
     self.links = {
         up = parameters.links.up,
         right = parameters.links.right,
@@ -104,11 +104,11 @@ function RectTransform:updatePositionAndScale (dt)
 end
 
 -- example: button.rectTransform:move("offset", 20, 10)
-function RectTransform:move (propertie, deltaX, deltaY)
-    self[propertie].left  = self[propertie].left + deltaX
-    self[propertie].right = self[propertie].right + deltaX
-    self[propertie].up    = self[propertie].up + deltaY
-    self[propertie].down  = self[propertie].down + deltaY
+function RectTransform:move (property, deltaX, deltaY)
+    self[property].left  = self[property].left - deltaX
+    self[property].right = self[property].right + deltaX
+    self[property].up    = self[property].up - deltaY
+    self[property].down  = self[property].down + deltaY
 end
 
 function RectTransform:lerp (initial, final, interpolation)

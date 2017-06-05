@@ -21,6 +21,14 @@ function Ink.new (devMode, width, height)
     self.width = width
     self.height = height
 
+    self.executionOrder = {
+        rect_transform = 0,
+        draw_image = 1,
+        button = 1,
+        text = 1,
+        rect_transform_viewer = 1,
+    }
+
     return self
 end
 
@@ -85,8 +93,8 @@ function Ink:update (dt)
 end
 
 function Ink:draw ()
-    --love.graphics.push()
-    --love.graphics.origin()
+    love.graphics.push()
+    love.graphics.origin()
 
     local i = 1
     while i <= #self.groups do
@@ -94,7 +102,7 @@ function Ink:draw ()
         i = i + 1
     end
 
-    --love.graphics.pop()
+    love.graphics.pop()
 end
 
 function Ink:keypressed (key, scancode, isrepeat)

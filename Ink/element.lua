@@ -14,7 +14,13 @@ function Element:new (ink, name, id, parameters)
 end
 
 function Element:addComponent (url, parameters)
-    local component = require (url).new({}, self.ink, self, parameters)
+    -- get the filename of url ("/path/to/script" -> "script")
+    local filename = url
+    while string.find(filename, "/") do
+        filename = string.sub(filename, string.find(filename, "/") + 1)
+    end
+
+    local component = require (url).new({}, self.ink, self, parameters, filename)
 
     if #self.components >= 1 then
         for i=1,#self.components do
@@ -27,13 +33,9 @@ function Element:addComponent (url, parameters)
     else
         self.components[1] = component
     end
-    
-    -- remove paths of the name if exists ("/path/to/script" -> "script")
-    while string.find(url, "/") do
-        url = string.sub(url, string.find(url, "/") + 1)
-    end
 
-    self[url] = self.components[#self.components]
+
+    self[filename] = self.components[#self.components]
 end
 
 function Element:getState ()

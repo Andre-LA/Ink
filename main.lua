@@ -3,52 +3,13 @@
 local Ink = require "Ink/ink"
 local ink = Ink.new(true, love.graphics.getWidth(), love.graphics.getHeight())
 
-function love.load()
-    local titulo = ink:createElement("Título (title)", 1, {
-        posZ = 4,
-        anchors = {left=1, right=1, up=1, down=0},
-        offset  = {left=0, right=0, up=0, down=-30},
-        velocity = 5,
+function love.load(args)
+    local texto_id = ink:createElement("texto", 1, {
+        anchors = {left=0.6, up=0.6, right=0.6, down=0.6}
     })
-    local painel_esquerdo = ink:createElement("Painel esquerdo (left pannel)", 1, {
-        posZ = 3,
-        anchors = {left=1, right=0, up=1, down=1},
-        offset  = {left=0, right=-150, up=30, down=0},
-        velocity = 5,
-    })
-    local conteudo = ink:createElement("Conteúdo (content)", 1, {
-        posZ = 2,
-        offset  = {left=150, right=0, up=30, down=0},
-        velocity = 5,
-    })
-    local filho_conteudo = ink:createElement("Filho (child)", 1, {
-        posZ = 1,
-        anchors = {left=0.7, right=0.7, up=0.7, down=0.7},
-        velocity = 5,
-        parentId = conteudo,
-    })
-    local imagem_filho = ink:createElement("Imagem (image)", 1, {
-        anchors = {up=0.8, right=0.8, down=0.8, left=0.8},
-        velocity = 5,
-        parentId = filho_conteudo,
-        preserveAspectRatio = true,
-    })
-
-    ink:getElement(titulo):addComponent("Ink/components/love/draw_image", {
-        image = love.graphics.newImage("image_test/image_test.png")
-    })
-
-    ink:getElement(painel_esquerdo):addComponent("Ink/components/love/draw_image", {
-        image = love.graphics.newImage("image_test/image_test.png")
-    })
-
-    ink:getElement(conteudo):addComponent("Ink/components/love/draw_image", {
-        image = love.graphics.newImage("image_test/image_test.png")
-    })
-
-    ink:getElement(imagem_filho):addComponent("Ink/components/love/draw_image", {
+    local texto_el = ink:getElement(texto_id)
+    texto_el:addComponent("Ink/components/love/draw_image", {
         use9sliced = true,
-
         imageLeftUp = love.graphics.newImage("image_test/9sliced/up_left.png"),
         imageUp = love.graphics.newImage("image_test/9sliced/up.png"),
         imageUpRight = love.graphics.newImage("image_test/9sliced/up_right.png"),
@@ -60,26 +21,21 @@ function love.load()
         imageDownLeft = love.graphics.newImage("image_test/9sliced/left_down.png"),
         imageDown = love.graphics.newImage("image_test/9sliced/down.png"),
         imageRightDown = love.graphics.newImage("image_test/9sliced/down_right.png"),
-    })
 
-    ink:getElement(imagem_filho):addComponent("Ink/components/love/button", {
-        colorWhenClicked={255,255,255,150},
-        onClickFunction = function(self, x, y, button, istouch)
-            print "Olá Mundo!"
-        end,
+        imageColor = {197,134,165,255}
     })
-
-    if ink.devMode then
-        ink:getElement(titulo):addComponent("Ink/components/love/rect_transform_viewer", {})
-        ink:getElement(painel_esquerdo):addComponent("Ink/components/love/rect_transform_viewer", {})
-        ink:getElement(conteudo):addComponent("Ink/components/love/rect_transform_viewer", {})
-        ink:getElement(filho_conteudo):addComponent("Ink/components/love/rect_transform_viewer", {})
-        ink:getElement(imagem_filho):addComponent("Ink/components/love/rect_transform_viewer", {})
-    end
+    texto_el:addComponent("Ink/components/love/text", {
+        text = {{200,0,0,255},"Löv",
+                {200,200,0,255}, "e ",
+                {0,200,0,255},"Text"},
+        horizontalAlign = "center",
+        verticalAlign = "center",
+    })
+    texto_el:addComponent("Ink/components/love/rect_transform_viewer", {})
 end
 
 function love.update (dt)
-    love.window.setTitle("Q/S (fps): [" .. love.timer.getFPS() .. "]")
+    love.window.setTitle("Ink Demo: Q/S (fps): [" .. love.timer.getFPS() .. "]")
     ink:update (dt)
 end
 

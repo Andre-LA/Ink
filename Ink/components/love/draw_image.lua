@@ -1,9 +1,9 @@
 local DrawImage = {}
 DrawImage.__index = DrawImage
 
-function DrawImage:new (ink, element, parameters)
+function DrawImage:new (ink, element, parameters, name)
     setmetatable(DrawImage, {__index = ink.COMPONENT})
-    ink.COMPONENT.new(self, ink, element, 50, parameters.parentId)
+    ink.COMPONENT.new(self, ink, element, parameters.parentId, name)
     setmetatable(self, DrawImage)
 
     if parameters.use9sliced then
@@ -19,6 +19,9 @@ function DrawImage:new (ink, element, parameters)
             leftup = parameters.imageLeftUp,
             center = parameters.imageCenter,
         }
+        for k,v in pairs(self.images) do
+            print(k,v)
+        end
     else
         self.using9sliced = false
         self.image = parameters.image

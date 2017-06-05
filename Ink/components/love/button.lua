@@ -1,9 +1,9 @@
 local Button = {}
 Button.__index = Button
 
-function Button:new (ink, element, parameters)
+function Button:new (ink, element, parameters, name)
     setmetatable(Button, {__index = ink.COMPONENT})
-    ink.COMPONENT.new(self, ink, element, 100, parameters.parentId)
+    ink.COMPONENT.new(self, ink, element, parameters.parentId, name)
     setmetatable(self, Button)
 
     self.colorWhenHover = parameters.colorWhenHover or {255,255,255,0}

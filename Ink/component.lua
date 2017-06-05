@@ -1,12 +1,13 @@
 local Component = {}
 Component.__index = Component
 
-function Component:new (ink, element, priority, parentId)
+function Component:new (ink, element, parentId, name)
     setmetatable(self, Component)
-
+    
     self.ink = ink
     self.element = element
-    self.priority = priority
+
+    self.priority = ink.executionOrder[name]
     self.parentId = parentId or 0
 
     return self
