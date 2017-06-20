@@ -62,7 +62,7 @@ function love.load()
     ink:addComponent "ui_components/rect_transform_viewer"
     ink:addComponent "ui_components/text"
     ink:addComponent "ui_components/button"
-    --[[
+
     top_menu    = ink:createEntity "top menu"
     left_pannel = ink:createEntity "left pannel"
     content_pannel = ink:createEntity "content pannel"
@@ -107,22 +107,13 @@ function love.load()
         editable = true,
     })
     ink:attachEntity("button", child_content, {
-        onClick = function (ink, entity)
+        onClick = function (_ink, entity)
             entity.text.inEdit = true
         end,
-        offClick = function (ink, entity)
+        offClick = function (_ink, entity)
             entity.text.inEdit = false
         end,
     })
-    --]]
-
-
-    for i=1,80 do
-        local e = ink:createEntity("oi" .. i)
-        ink:attachEntity("rect_transform", e, {})
-        --ink:attachEntity("rect_transform_viewer", e, {})
-        ink:attachEntity("draw_image", e, {image = love.graphics.newImage("image_test/image_test.png"), useSliced=false})
-    end
 end
 
 function love.draw ()
