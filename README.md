@@ -1,5 +1,7 @@
 # Ink
 
+![ink demo gif](http://i.imgur.com/OHWrVd2.gif)
+
 ## English (google translated :P)
 
 The purpose of ink is to: create components and connect them to entities
