@@ -8,7 +8,7 @@ The purpose of ink is to: create components and connect them to entities
 
 It works as follows:
 
-For each function executed in ink (via doComponentsFunction ("function_name")), the functions of the same name of the components are executed (it only executes the components that contain a function with this name).
+For each function executed in ink (via :call ("function_name") function), the functions of the same name of the components are executed (it only executes the components that contain a function with this name).
 
 For each function performed on a component, the entities that contain that component (that is, a key with the name of the component file) are taken as parameters.
 
@@ -22,7 +22,7 @@ O objetivo do ink é: criar componentes e conectá-los às entidades
 
 Funciona da seguinte maneira:
 
-Para cada função executada no ink (via doComponentsFunction("function_name")), são executadas as funções de mesmo nome dos componentes (apenas executa os componentes que contém uma função com este nome).
+Para cada função executada no ink (via :call("function_name") function), são executadas as funções de mesmo nome dos componentes (apenas executa os componentes que contém uma função com este nome).
 
 Para cada função executada de um componente, é levada como parâmetro as entidades que contém esse componente (ou seja, uma chave com o nome do arquivo do componente).
 
