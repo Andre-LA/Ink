@@ -64,12 +64,10 @@ local function _sortByZ (self, entities_ids)
         entities[#entities+1] = self:getEntity(entities_ids[i])
     end
 
-    for i=1,#entities do
-        if i ~= #entities then
-            if entities[i][self.transformComponent].position.z > entities[i+1][self.transformComponent].position.z then
-                entities[i+1], entities[i] = entities[i], entities[i+1]
-                i = 0
-            end
+    for i=1,#entities-1 do
+        if entities[i][self.transformComponent].position.z > entities[i+1][self.transformComponent].position.z then
+            entities[i+1], entities[i] = entities[i], entities[i+1]
+            i = 0
         end
     end
 
@@ -249,7 +247,6 @@ function ink:call (function_name, ...)
             local system = draw_systems[i]
             local entities = _sortByZ(self, system.entities)
             for j=1,#entities do
-                print ("desenhand: ", entities[j].name)
                 system.draw(entities[j])
             end
         end
