@@ -66,7 +66,7 @@ local function abre_programa_1(painel_conteudo)
     ink:addComponent(campo_texto, "text", require("components/text")({
         editable = true,
         color = {20,20,20,255},
-        offsets = {x = 40, y = 40}
+        --offsets = {x = 40, y = 40}
     }))
     ink:addComponent(campo_texto, "button", require("components/button")({
         onClick = function(_, ent)
@@ -93,8 +93,8 @@ local function abre_programa_1(painel_conteudo)
     }))
     ink:addComponent(botao_ajuste_L, "text", require("components/text")({
         text = "Alinhar à esquerda",
+        horizontalAlign = "left",
         verticalAlign = "center",
-        horizontalAlign = "center"
     }))
 
     -- botao de alinhamento central
@@ -113,8 +113,8 @@ local function abre_programa_1(painel_conteudo)
     }))
     ink:addComponent(botao_ajuste_C, "text", require("components/text")({
         text = "Alinhar ao meio",
+        horizontalAlign = "center",
         verticalAlign = "center",
-        horizontalAlign = "center"
     }))
 
     -- botao de alinhamento direito
@@ -133,8 +133,8 @@ local function abre_programa_1(painel_conteudo)
     }))
     ink:addComponent(botao_ajuste_R, "text", require("components/text")({
         text = "Alinhar à direita",
+        horizontalAlign = "right",
         verticalAlign = "center",
-        horizontalAlign = "center"
     }))
 
     -- botao de alinhamento justificado
@@ -153,8 +153,8 @@ local function abre_programa_1(painel_conteudo)
     }))
     ink:addComponent(botao_ajuste_J, "text", require("components/text")({
         text = "Alinhar com justificado",
+        horizontalAlign = "justify",
         verticalAlign = "center",
-        horizontalAlign = "center"
     }))
 end
 
