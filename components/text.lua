@@ -10,7 +10,7 @@ return function (parameters)
         editable  = parameters.editable or false,
         inEdit    = false,
         multiLine = true,
-        editBgColor       = parameters.editBgColor       or {0,0,0,100},
+        editBgColor       = parameters.editBgColor       or {0,0,0,50},
         verticalAlign     = parameters.verticalAlign     or "up",
         horizontalAlign   = parameters.horizontalAlign   or "left",
         useMultipleColors = parameters.useMultipleColors or false,
@@ -26,6 +26,22 @@ return function (parameters)
     else
         finalParameters.color = parameters.color or {255,255,255,255}
     end
+
+    assert( -- assert on horizontalAlign
+        finalParameters.horizontalAlign == "left"
+        or finalParameters.horizontalAlign == "center"
+        or finalParameters.horizontalAlign == "right"
+        or finalParameters.horizontalAlign == "justify"
+        ,
+        'horizontalAlign must be "left", "center", "right" or justify')
+
+    assert( -- assert on verticalAlign
+        finalParameters.verticalAlign == "up"
+        or finalParameters.verticalAlign == "center"
+        or finalParameters.verticalAlign == "down"
+        ,
+        'verticalAlign must be "up", "center" or "down"'
+    )
 
     return finalParameters
 end

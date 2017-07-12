@@ -1,6 +1,3 @@
--- TODO FIX incorrect verticalAlign
--- TODO FIX incorrect horizontalAlign
-
 local text = {}
 text.__index = text
 local _utf8 = require "utf8"
@@ -50,44 +47,51 @@ function text.toggleEdit(entity)
     entity.text.inEdit = not entity.text.inEdit
 end
 
-function text.update (entity, _)
+function text.update (entity)
     if entity.text.verticalAlign == "up" then
         entity.text.posY = entity.rect_transform.position.y
     elseif entity.text.verticalAlign == "center" then
+        local _, lines = entity.text.font:getWrap(entity.text.text, entity.rect_transform.scale.x)
+
         entity.text.posY = entity.rect_transform.position.y
                             + entity.rect_transform.scale.y/2
-                            - entity.text.font:getHeight()/2
+                            - (entity.text.font:getHeight() * #lines) / 2
+    else -- when "down"
+        local _, lines = entity.text.font:getWrap(entity.text.text, entity.rect_transform.scale.x)
+
+        entity.text.posY = entity.rect_transform.position.y
+                            + entity.rect_transform.scale.y
+                            - entity.text.font:getHeight() * #lines
     end
 end
 
 function text.draw(entity)
-    local rect_transform = entity.rect_transform
-
     love.graphics.setFont(entity.text.font)
 
     if entity.text.inEdit then
         love.graphics.setColor(entity.text.editBgColor)
 
+        local font_height = entity.text.font:getHeight()
+        local width, lines = entity.text.font:getWrap(entity.text.text, entity.rect_transform.scale.x)
+
         local align_x_offset = 0 -- 0 when entity.text.horizontalAlign = "left"
         if entity.text.horizontalAlign == "center" then
-            align_x_offset = (rect_transform.scale.x - width) / 2
-        elseif entity.horizontalAlign == "right" then
-            align_x_offset = rect_transform.scale.x - width
+            align_x_offset = entity.rect_transform.scale.x / 2 - width / 2
+        elseif entity.text.horizontalAlign == "right" then
+            align_x_offset = entity.rect_transform.scale.x - width
         end
 
-        local font_height = entity.text.font:getHeight()
-        local width, lines = entity.text.font:getWrap(entity.text.text, rect_transform.scale.x)
         love.graphics.rectangle(
             "fill",
-            rect_transform.position.x + entity.text.offsets.x + align_x_offset,
+            entity.rect_transform.position.x + entity.text.offsets.x + align_x_offset,
             entity.text.posY + entity.text.offsets.y,
-            width,
+            entity.text.horizontalAlign ~= "justify" and width or entity.rect_transform.scale.x,
             font_height * #lines
         )
-
     end
 
-    local text_draw = {}
+    local text_draw
+
     if entity.text.useMultipleColors then
         love.graphics.setColor(255, 255, 255, 255)
         text_draw = _mountTextColorsTable(entity.text.text, entity.text.colors, entity.text.multipleColorsIndexes)
@@ -95,11 +99,12 @@ function text.draw(entity)
         love.graphics.setColor(entity.text.color)
         text_draw = entity.text.text
     end
+
     love.graphics.printf(
         text_draw,
-        _floor(rect_transform.position.x),
+        _floor(entity.rect_transform.position.x),
         _floor(entity.text.posY),
-        rect_transform.scale.x,
+        entity.rect_transform.scale.x,
         entity.text.horizontalAlign,
         entity.text.rotation,
         entity.text.scale.x,
@@ -111,7 +116,7 @@ function text.draw(entity)
     )
 end
 
-function text.keypressed(entity, key, scancode, isrepeat)
+function text.keypressed(entity, _, scancode)
     if not (entity.text.editable and entity.text.inEdit) then
         return
     end
