@@ -15,17 +15,17 @@ local ink = Ink(false, "rect_transform",{
 })
 -- arquivo de demonstração (demo file)
 local images = {
-    leftup  = love.graphics.newImage "gui/image_test/9sliced/up_left.png",
-    up      = love.graphics.newImage "gui/image_test/9sliced/up.png",
-    upright = love.graphics.newImage "gui/image_test/9sliced/up_right.png",
+    leftup  = love.graphics.newImage "demos/image_test/9sliced/up_left.png",
+    up      = love.graphics.newImage "demos/image_test/9sliced/up.png",
+    upright = love.graphics.newImage "demos/image_test/9sliced/up_right.png",
 
-    left    = love.graphics.newImage "gui/image_test/9sliced/left.png",
-    center  = love.graphics.newImage "gui/image_test/9sliced/center.png",
-    right   = love.graphics.newImage "gui/image_test/9sliced/right.png",
+    left    = love.graphics.newImage "demos/image_test/9sliced/left.png",
+    center  = love.graphics.newImage "demos/image_test/9sliced/center.png",
+    right   = love.graphics.newImage "demos/image_test/9sliced/right.png",
 
-    downleft  = love.graphics.newImage "gui/image_test/9sliced/left_down.png",
-    down      = love.graphics.newImage "gui/image_test/9sliced/down.png",
-    rightdown = love.graphics.newImage "gui/image_test/9sliced/down_right.png",
+    downleft  = love.graphics.newImage "demos/image_test/9sliced/left_down.png",
+    down      = love.graphics.newImage "demos/image_test/9sliced/down.png",
+    rightdown = love.graphics.newImage "demos/image_test/9sliced/down_right.png",
 }
 
 local paleta = {
