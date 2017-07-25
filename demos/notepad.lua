@@ -92,7 +92,7 @@ local function abre_programa_1(painel_conteudo)
         end
     }))
     ink:addComponent(botao_ajuste_L, "text", require("gui/components/text")({
-        text = "Alinhar à esquerda",
+        text = "Left Align",
         horizontalAlign = "left",
         verticalAlign = "center",
     }))
@@ -112,7 +112,7 @@ local function abre_programa_1(painel_conteudo)
         end
     }))
     ink:addComponent(botao_ajuste_C, "text", require("gui/components/text")({
-        text = "Alinhar ao meio",
+        text = "Center Align",
         horizontalAlign = "center",
         verticalAlign = "center",
     }))
@@ -132,7 +132,7 @@ local function abre_programa_1(painel_conteudo)
         end
     }))
     ink:addComponent(botao_ajuste_R, "text", require("gui/components/text")({
-        text = "Alinhar à direita",
+        text = "Right Align",
         horizontalAlign = "right",
         verticalAlign = "center",
     }))
@@ -152,7 +152,7 @@ local function abre_programa_1(painel_conteudo)
         end
     }))
     ink:addComponent(botao_ajuste_J, "text", require("gui/components/text")({
-        text = "Alinhar com justificado",
+        text = "Justify Align",
         horizontalAlign = "justify",
         verticalAlign = "center",
     }))
@@ -225,7 +225,7 @@ local function create_main_menu ()
         end
     }))
     ink:addComponent(botao_programa_1, "text", require("gui/components/text")({
-        text = "programa 1",
+        text = "Open",
         horizontalAlign = "center",
         verticalAlign = "center"
     }))
@@ -247,7 +247,7 @@ local function create_main_menu ()
         end
     }))
     ink:addComponent(botao_programa_2, "text", require("gui/components/text")({
-        text = "programa 2",
+        text = "Close",
         horizontalAlign = "center",
         verticalAlign = "center"
     }))

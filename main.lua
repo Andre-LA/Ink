@@ -1,1 +1,1 @@
-dofile("demos/programs.lua")
+dofile("demos/notepad.lua")
