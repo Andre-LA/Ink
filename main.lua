@@ -15,17 +15,17 @@ local ink = Ink(false, "rect_transform",{
 })
 -- arquivo de demonstração (demo file)
 local images = {
-    leftup  = love.graphics.newImage "image_test/9sliced/up_left.png",
-    up      = love.graphics.newImage "image_test/9sliced/up.png",
-    upright = love.graphics.newImage "image_test/9sliced/up_right.png",
+    leftup  = love.graphics.newImage "gui/image_test/9sliced/up_left.png",
+    up      = love.graphics.newImage "gui/image_test/9sliced/up.png",
+    upright = love.graphics.newImage "gui/image_test/9sliced/up_right.png",
 
-    left    = love.graphics.newImage "image_test/9sliced/left.png",
-    center  = love.graphics.newImage "image_test/9sliced/center.png",
-    right   = love.graphics.newImage "image_test/9sliced/right.png",
+    left    = love.graphics.newImage "gui/image_test/9sliced/left.png",
+    center  = love.graphics.newImage "gui/image_test/9sliced/center.png",
+    right   = love.graphics.newImage "gui/image_test/9sliced/right.png",
 
-    downleft  = love.graphics.newImage "image_test/9sliced/left_down.png",
-    down      = love.graphics.newImage "image_test/9sliced/down.png",
-    rightdown = love.graphics.newImage "image_test/9sliced/down_right.png",
+    downleft  = love.graphics.newImage "gui/image_test/9sliced/left_down.png",
+    down      = love.graphics.newImage "gui/image_test/9sliced/down.png",
+    rightdown = love.graphics.newImage "gui/image_test/9sliced/down_right.png",
 }
 
 local paleta = {
@@ -38,11 +38,11 @@ local paleta = {
 }
 
 local function add_all_necessary_systems ()
-    ink:addSystem "systems/rect_transform"
-    ink:addSystem "systems/draw_image"
-    ink:addSystem "systems/rect_transform_viewer"
-    ink:addSystem "systems/text"
-    ink:addSystem "systems/button"
+    ink:addSystem "gui/systems/rect_transform"
+    ink:addSystem "gui/systems/draw_image"
+    ink:addSystem "gui/systems/rect_transform_viewer"
+    ink:addSystem "gui/systems/text"
+    ink:addSystem "gui/systems/button"
 end
 
 local function abre_programa_1(painel_conteudo)
@@ -54,21 +54,21 @@ local function abre_programa_1(painel_conteudo)
     local campo_texto = ink:createEntity("campo de texto", painel_conteudo, "programa_1")
 
     -- campo de texto
-    ink:addComponent(campo_texto, "rect_transform", require ("components/rect_transform")({
+    ink:addComponent(campo_texto, "rect_transform", require ("gui/components/rect_transform")({
         anchors = {up = 0.7, down = 1, left = 1, right = 1},
         offset  = {up = 0, left = 40, right = 40, down = 40}
     }))
-    ink:addComponent(campo_texto, "draw_image", require("components/draw_image")({
+    ink:addComponent(campo_texto, "draw_image", require("gui/components/draw_image")({
         imageColor = {230,230,230,255},
         useSliced = true,
         images = images
     }))
-    ink:addComponent(campo_texto, "text", require("components/text")({
+    ink:addComponent(campo_texto, "text", require("gui/components/text")({
         editable = true,
         color = {20,20,20,255},
         --offsets = {x = 40, y = 40}
     }))
-    ink:addComponent(campo_texto, "button", require("components/button")({
+    ink:addComponent(campo_texto, "button", require("gui/components/button")({
         onClick = function(_, ent)
             ent.text.inEdit = true
         end,
@@ -78,80 +78,80 @@ local function abre_programa_1(painel_conteudo)
     }))
 
     -- botao de alinhamento esquerdo
-    ink:addComponent(botao_ajuste_L, "rect_transform", require ("components/rect_transform")({
+    ink:addComponent(botao_ajuste_L, "rect_transform", require ("gui/components/rect_transform")({
         anchors = {left = 0.9, right = 0.25, up = 0.95, down = 0.15},
     }))
-    ink:addComponent(botao_ajuste_L, "draw_image", require ("components/draw_image")({
+    ink:addComponent(botao_ajuste_L, "draw_image", require ("gui/components/draw_image")({
         useSliced = true,
         images = images,
         imageColor = paleta.verde
     }))
-    ink:addComponent(botao_ajuste_L, "button", require("components/button")({
+    ink:addComponent(botao_ajuste_L, "button", require("gui/components/button")({
         onClick = function(_ink)
             _ink:getEntity(campo_texto).text.horizontalAlign = "left"
         end
     }))
-    ink:addComponent(botao_ajuste_L, "text", require("components/text")({
+    ink:addComponent(botao_ajuste_L, "text", require("gui/components/text")({
         text = "Alinhar à esquerda",
         horizontalAlign = "left",
         verticalAlign = "center",
     }))
 
     -- botao de alinhamento central
-    ink:addComponent(botao_ajuste_C, "rect_transform", require ("components/rect_transform")({
+    ink:addComponent(botao_ajuste_C, "rect_transform", require ("gui/components/rect_transform")({
         anchors = {left = 0.7, right = 0.45, up = 0.95, down = 0.15},
     }))
-    ink:addComponent(botao_ajuste_C, "draw_image", require ("components/draw_image")({
+    ink:addComponent(botao_ajuste_C, "draw_image", require ("gui/components/draw_image")({
         useSliced = true,
         images = images,
         imageColor = paleta.verde
     }))
-    ink:addComponent(botao_ajuste_C, "button", require("components/button")({
+    ink:addComponent(botao_ajuste_C, "button", require("gui/components/button")({
         onClick = function(_ink)
             _ink:getEntity(campo_texto).text.horizontalAlign = "center"
         end
     }))
-    ink:addComponent(botao_ajuste_C, "text", require("components/text")({
+    ink:addComponent(botao_ajuste_C, "text", require("gui/components/text")({
         text = "Alinhar ao meio",
         horizontalAlign = "center",
         verticalAlign = "center",
     }))
 
     -- botao de alinhamento direito
-    ink:addComponent(botao_ajuste_R, "rect_transform", require ("components/rect_transform")({
+    ink:addComponent(botao_ajuste_R, "rect_transform", require ("gui/components/rect_transform")({
         anchors = {left = 0.5, right = 0.65, up = 0.95, down = 0.15},
     }))
-    ink:addComponent(botao_ajuste_R, "draw_image", require ("components/draw_image")({
+    ink:addComponent(botao_ajuste_R, "draw_image", require ("gui/components/draw_image")({
         useSliced = true,
         images = images,
         imageColor = paleta.verde
     }))
-    ink:addComponent(botao_ajuste_R, "button", require("components/button")({
+    ink:addComponent(botao_ajuste_R, "button", require("gui/components/button")({
         onClick = function(_ink)
             _ink:getEntity(campo_texto).text.horizontalAlign = "right"
         end
     }))
-    ink:addComponent(botao_ajuste_R, "text", require("components/text")({
+    ink:addComponent(botao_ajuste_R, "text", require("gui/components/text")({
         text = "Alinhar à direita",
         horizontalAlign = "right",
         verticalAlign = "center",
     }))
 
     -- botao de alinhamento justificado
-    ink:addComponent(botao_ajuste_J, "rect_transform", require ("components/rect_transform")({
+    ink:addComponent(botao_ajuste_J, "rect_transform", require ("gui/components/rect_transform")({
         anchors = {left = 0.3, right = 0.85, up = 0.95, down = 0.15},
     }))
-    ink:addComponent(botao_ajuste_J, "draw_image", require ("components/draw_image")({
+    ink:addComponent(botao_ajuste_J, "draw_image", require ("gui/components/draw_image")({
         useSliced = true,
         images = images,
         imageColor = paleta.verde
     }))
-    ink:addComponent(botao_ajuste_J, "button", require("components/button")({
+    ink:addComponent(botao_ajuste_J, "button", require("gui/components/button")({
         onClick = function(_ink)
             _ink:getEntity(campo_texto).text.horizontalAlign = "justify"
         end
     }))
-    ink:addComponent(botao_ajuste_J, "text", require("components/text")({
+    ink:addComponent(botao_ajuste_J, "text", require("gui/components/text")({
         text = "Alinhar com justificado",
         horizontalAlign = "justify",
         verticalAlign = "center",
@@ -172,34 +172,34 @@ local function create_main_menu ()
     local painel_conteudo =ink:createEntity "painel de conteudo"
 
     -- adicionando os componentes do menu_superior
-    ink:addComponent (menu_superior, "rect_transform", require ("components/rect_transform")({
+    ink:addComponent (menu_superior, "rect_transform", require ("gui/components/rect_transform")({
         anchors = {up = 1, left = 1, right = 1, down = 0},
         offset  = {up = 0, left = 0, right = 0, down = -30},
     }))
 
-    ink:addComponent (menu_superior, "draw_image", require ("components/draw_image")({
+    ink:addComponent (menu_superior, "draw_image", require ("gui/components/draw_image")({
         useSliced = true,
         images = images,
         imageColor = paleta.azul
     }))
 
     -- adicionando componentes do painel esquerdo
-    ink:addComponent (painel_esquerdo, "rect_transform", require("components/rect_transform")({
+    ink:addComponent (painel_esquerdo, "rect_transform", require("gui/components/rect_transform")({
         anchors = {up = 1, left = 1, right = 0, down = 1},
         offset  = {up = 30, left = 0, down = 0, right = -120}
     }))
-    ink:addComponent(painel_esquerdo, "draw_image", require("components/draw_image")({
+    ink:addComponent(painel_esquerdo, "draw_image", require("gui/components/draw_image")({
         useSliced = true,
         images = images,
         imageColor = paleta.vermelho
     }))
 
     -- adicionando componentes do conteudo
-    ink:addComponent(painel_conteudo, "rect_transform", require ("components/rect_transform")({
+    ink:addComponent(painel_conteudo, "rect_transform", require ("gui/components/rect_transform")({
         anchors = {up = 1, left = 1, right = 1, down = 1},
         offset  = {left = 120, up = 30, down = 0, right = 0}
     }))
-    ink:addComponent(painel_conteudo, "draw_image", require("components/draw_image")({
+    ink:addComponent(painel_conteudo, "draw_image", require("gui/components/draw_image")({
         useSliced = true,
         images = images,
         imageColor = paleta.lima
@@ -209,55 +209,55 @@ local function create_main_menu ()
     local botao_programa_1 = ink:createEntity ("botao programa 1", painel_esquerdo)
     local botao_programa_2 = ink:createEntity("botao programa 2", painel_esquerdo)
 
-    ink:addComponent(botao_programa_1, "rect_transform", require ("components/rect_transform")({
+    ink:addComponent(botao_programa_1, "rect_transform", require ("gui/components/rect_transform")({
         anchors = {left = 0.9, right = 0.9, up = 0.95, down = 0.1},
     }))
-    ink:addComponent(botao_programa_1, "draw_image", require ("components/draw_image")({
+    ink:addComponent(botao_programa_1, "draw_image", require ("gui/components/draw_image")({
         useSliced = true,
         images = images,
         imageColor = paleta.azul
     }))
-    ink:addComponent(botao_programa_1, "button", require("components/button")({
+    ink:addComponent(botao_programa_1, "button", require("gui/components/button")({
         onClick = function(_ink, ent)
             abre_programa_1(painel_conteudo, ent)
             ent.button.clickable = false
             _ink:getEntity(botao_programa_2).button.clickable = true
         end
     }))
-    ink:addComponent(botao_programa_1, "text", require("components/text")({
+    ink:addComponent(botao_programa_1, "text", require("gui/components/text")({
         text = "programa 1",
         horizontalAlign = "center",
         verticalAlign = "center"
     }))
 
     -- botao programa 2
-    ink:addComponent(botao_programa_2, "rect_transform", require("components/rect_transform")({
+    ink:addComponent(botao_programa_2, "rect_transform", require("gui/components/rect_transform")({
         anchors = {left = 0.9, right = 0.9, up = 0.85, down = 0.2}
     }))
-    ink:addComponent(botao_programa_2, "draw_image", require ("components/draw_image")({
+    ink:addComponent(botao_programa_2, "draw_image", require ("gui/components/draw_image")({
         useSliced = true,
         images = images,
         imageColor = paleta.azul
     }))
-    ink:addComponent(botao_programa_2, "button", require("components/button")({
+    ink:addComponent(botao_programa_2, "button", require("gui/components/button")({
         onClick = function(_ink, ent)
             fecha_programa_1(painel_conteudo, ent)
             ent.button.clickable = false
             _ink:getEntity(botao_programa_1).button.clickable = true
         end
     }))
-    ink:addComponent(botao_programa_2, "text", require("components/text")({
+    ink:addComponent(botao_programa_2, "text", require("gui/components/text")({
         text = "programa 2",
         horizontalAlign = "center",
         verticalAlign = "center"
     }))
 
     if ink.devMode then
-        ink:addComponent(menu_superior, "rect_transform_viewer", require("components/rect_transform_viewer")({
+        ink:addComponent(menu_superior, "rect_transform_viewer", require("gui/components/rect_transform_viewer")({
             color = {255,255,255,255}
         }))
-        ink:addComponent(painel_esquerdo, "rect_transform_viewer", require("components/rect_transform_viewer")({}))
-        ink:addComponent(painel_conteudo, "rect_transform_viewer", require("components/rect_transform_viewer")({
+        ink:addComponent(painel_esquerdo, "rect_transform_viewer", require("gui/components/rect_transform_viewer")({}))
+        ink:addComponent(painel_conteudo, "rect_transform_viewer", require("gui/components/rect_transform_viewer")({
             color={255,255,255,255}
         }))
     end
