@@ -1,6 +1,6 @@
 # Ink
 
-![ink demo gif](http://i.imgur.com/OHWrVd2.gif)
+![ink demo gif](http://i.imgur.com/WoQ8Laa.gif)
 
 ## English (google translated :P)
 
