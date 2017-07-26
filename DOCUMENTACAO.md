@@ -19,9 +19,9 @@
 
 # Funções
 ## Ink
-### `Ink.new(devMove, transformComponent, executionOrder, drawOrder)`  
+### `Ink.new(devMode, transformComponent, executionOrder, drawOrder)`  
 ou  
-`Ink(devMove, transformComponent, executionOrder, drawOrder)`  
+`Ink(devMode, transformComponent, executionOrder, drawOrder)`  
 
 Cria uma nova instância ink (ou seja, é um construtor)
 
