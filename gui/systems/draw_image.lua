@@ -14,14 +14,14 @@ end
 function draw_image.draw (entity)
     love.graphics.setColor(entity.draw_image.imageColor)
 
-    local posX = entity.rect_transform.position.x
-    local posY = entity.rect_transform.position.y
+    local pos_x = entity.rect_transform.position.x
+    local pos_y = entity.rect_transform.position.y
 
     if not entity.draw_image.useSliced then
-        local scaleX = entity.rect_transform.scale.x / entity.draw_image.image:getWidth()
-        local scaleY = entity.rect_transform.scale.y / entity.draw_image.image:getHeight()
+        local scale_x = entity.rect_transform.scale.x / entity.draw_image.image:getWidth()
+        local scale_y = entity.rect_transform.scale.y / entity.draw_image.image:getHeight()
 
-        love.graphics.draw(entity.draw_image.image, posX, posY, 0, scaleX, scaleY)
+        love.graphics.draw(entity.draw_image.image, pos_x, pos_y, 0, scale_x, scale_y)
     else
         -- corners
         local leftup_px_x    = entity.draw_image.images.leftup:getWidth()
@@ -34,7 +34,6 @@ function draw_image.draw (entity)
         local downleft_px_y  = entity.draw_image.images.downleft:getHeight()
         local rightdown_px_y = entity.draw_image.images.rightdown:getHeight()
 
-        -- static values
         local up_px_y    = entity.draw_image.images.up:getHeight()
         local left_px_x  = entity.draw_image.images.left:getWidth()
         local right_px_x = entity.draw_image.images.right:getWidth()
@@ -58,20 +57,65 @@ function draw_image.draw (entity)
         local ren_scaleDownX = down_px_x / entity.draw_image.images.down:getWidth()
 
         -- render
-        -- top
-        love.graphics.draw(entity.draw_image.images.leftup, posX, posY, 0, 1, 1)
-        love.graphics.draw(entity.draw_image.images.up, posX + leftup_px_x, posY, 0, ren_scaleUpX, 1)
-        love.graphics.draw(entity.draw_image.images.upright, posX + leftup_px_x + up_px_x, posY, 0, 1, 1)
+        -- TOP
+        love.graphics.draw(entity.draw_image.images.leftup,
+                            pos_x,
+                            pos_y,
+                            0,
+                            1,
+                            1)
+        love.graphics.draw(entity.draw_image.images.up,
+                            pos_x + leftup_px_x,
+                            pos_y,
+                            0,
+                            ren_scaleUpX,
+                            1)
+        love.graphics.draw(entity.draw_image.images.upright,
+                            pos_x + leftup_px_x + up_px_x,
+                            pos_y,
+                            0,
+                            1,
+                            1)
 
-        -- center
-        love.graphics.draw(entity.draw_image.images.left, posX, posY + leftup_px_y, 0, 1, ren_scaleLeftY)
-        love.graphics.draw(entity.draw_image.images.center, posX + left_px_x, posY + up_px_y, 0, ren_scaleCenterX, ren_scaleCenterY)
-        love.graphics.draw(entity.draw_image.images.right, posX + left_px_x + center_px_x, posY + upright_px_y, 0, 1, ren_scaleRightY)
+        -- CENTER
+        love.graphics.draw(entity.draw_image.images.left,
+                            pos_x,
+                            pos_y + leftup_px_y,
+                            0,
+                            1,
+                            ren_scaleLeftY)
+        love.graphics.draw(entity.draw_image.images.center,
+                            pos_x + left_px_x,
+                            pos_y + up_px_y,
+                            0,
+                            ren_scaleCenterX,
+                            ren_scaleCenterY)
+        love.graphics.draw(entity.draw_image.images.right,
+                            pos_x + left_px_x + center_px_x,
+                            pos_y + upright_px_y,
+                            0,
+                            1,
+                            ren_scaleRightY)
 
-        -- bottom
-        love.graphics.draw(entity.draw_image.images.downleft, posX, posY + leftup_px_y + left_px_y, 0, 1, 1)
-        love.graphics.draw(entity.draw_image.images.down, posX + downleft_px_x, posY + up_px_y + center_px_y, 0, ren_scaleDownX, 1)
-        love.graphics.draw(entity.draw_image.images.rightdown, posX + downleft_px_x + down_px_x, posY + upright_px_y + right_px_y, 0, 1, 1)
+        -- BOTTOM
+        love.graphics.draw(entity.draw_image.images.downleft,
+                            pos_x,
+                            pos_y + leftup_px_y + left_px_y,
+                            0,
+                            1,
+                            1)
+        love.graphics.draw(entity.draw_image.images.down,
+                            pos_x + downleft_px_x,
+                            pos_y + up_px_y + center_px_y,
+                            0,
+                            ren_scaleDownX,
+                            1)
+        love.graphics.draw(entity.draw_image.images.rightdown,
+                            pos_x + downleft_px_x + down_px_x,
+                            pos_y + upright_px_y + right_px_y,
+                            0,
+                            1,
+                            1)
     end
 end
 

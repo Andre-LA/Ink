@@ -14,7 +14,7 @@ function text.new()
     return self
 end
 
-local function _mountTextColorsTable (text_to_split, colors, text_indexes)
+local function _mount_text_colors_table (text_to_split, colors, text_indexes)
     local _utf8_sub = function(i, j)
         i = _utf8.offset(text_to_split, i)
         j = _utf8.offset(text_to_split, j+1)
@@ -23,7 +23,7 @@ local function _mountTextColorsTable (text_to_split, colors, text_indexes)
         end
     end
 
-    local finalTxClsTable = {}
+    local final_txt_cls_table = {}
     local previous = 1
     for i=1,#text_indexes do
         local text_index = text_indexes[i]
@@ -33,13 +33,13 @@ local function _mountTextColorsTable (text_to_split, colors, text_indexes)
                                 or _utf8_sub(previous, _utf8.len(text_to_split))
 
         if sliced_text then
-            finalTxClsTable[#finalTxClsTable+1] = colors[i]
-            finalTxClsTable[#finalTxClsTable+1] = sliced_text
+            final_txt_cls_table[#final_txt_cls_table+1] = colors[i]
+            final_txt_cls_table[#final_txt_cls_table+1] = sliced_text
             previous = _utf8.len(sliced_text)+1
         end
     end
 
-    return finalTxClsTable
+    return final_txt_cls_table
 end
 
 
@@ -94,7 +94,7 @@ function text.draw(entity)
 
     if entity.text.useMultipleColors then
         love.graphics.setColor(255, 255, 255, 255)
-        text_draw = _mountTextColorsTable(entity.text.text, entity.text.colors, entity.text.multipleColorsIndexes)
+        text_draw = _mount_text_colors_table(entity.text.text, entity.text.colors, entity.text.multipleColorsIndexes)
     else
         love.graphics.setColor(entity.text.color)
         text_draw = entity.text.text
