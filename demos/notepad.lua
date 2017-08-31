@@ -13,6 +13,7 @@ local ink = Ink(false, "rect_transform",{
     "text",
     "rect_transform_viewer",
 })
+
 -- arquivo de demonstração (demo file)
 local images = {
     leftup  = love.graphics.newImage "demos/image_test/9sliced/up_left.png",

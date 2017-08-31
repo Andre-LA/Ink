@@ -19,12 +19,12 @@ end
 
 local function _update_position_and_scale (entity, dt)
     local parent_position = entity.parentId ~= 0
-        and ink:getEntity(entity.parentId).rect_transform.position
-        or {x = 0, y = 0}
+                                and ink:getEntity(entity.parentId).rect_transform.position
+                                or {x = 0, y = 0}
 
     local parent_scale = entity.parentId ~= 0
-        and ink:getEntity(entity.parentId).rect_transform.scale
-        or {x = love.graphics.getWidth(), y = love.graphics.getHeight()}
+                                and ink:getEntity(entity.parentId).rect_transform.scale
+                                or {x = love.graphics.getWidth(), y = love.graphics.getHeight()}
 
     local origin_x = parent_position.x
     local origin_y = parent_position.y
