@@ -133,6 +133,14 @@ function ink:getEntitiesIdsByKey(key, value)
     return entities_ids
 end
 
+function ink:getEntityIdByKey(key, value)
+    for i=1,#self.entities do
+        if self.entities[i][key] == value then
+            return self.entities[i].id
+        end
+    end
+end
+
 function ink:removeEntity (entity_id)
     for i=1,#self.entities do
         if self.entities[i].id == entity_id then
@@ -149,6 +157,11 @@ function ink:removeEntity (entity_id)
                 break
             end
         end
+    end
+
+    local child_entity = self:getEntityIdByKey('parentId', entity_id)
+    if child_entity then
+        self:removeEntity(child_entity)
     end
 end
 
@@ -167,7 +180,6 @@ function ink:removeComponent (entity_id, component_name)
 end
 
 -- systems
-
 function ink:addSystem (url)
     local _findExecutionOrder = function (system_name)
         for i=1,#self.executionOrder do
