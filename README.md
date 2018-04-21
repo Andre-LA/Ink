@@ -1,3 +1,5 @@
+**I will not keep this repository anymore, because I created a new library that subs with similar goals: https://github.com/Andre-LA/Motor**
+
 # Ink
 
 ![ink demo gif](http://i.imgur.com/WoQ8Laa.gif)
